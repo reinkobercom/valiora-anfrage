@@ -12,7 +12,7 @@ export default defineConfig({
   adapter: vercel(),
   // URLs exakt wie bei Onepage: ohne Schrägstrich am Ende (/kurz, /danke).
   trailingSlash: 'never',
-  build: { format: 'file' },
+  build: { format: 'file', inlineStylesheets: 'always' },
   image: { responsiveStyles: false },
   devToolbar: { enabled: false },
 });
