@@ -1,0 +1,27 @@
+---
+/** @siteui/icon-card */
+import Icon from './Icon.astro';
+interface Props { icon: string; title: string; text: string; tone?: 'dark' | 'light'; class?: string }
+const { icon, title, text, tone = 'dark', class: cls } = Astro.props;
+---
+<div class:list={['ui-icard', `t-${tone}`, cls]}>
+  <span class="mark"><Icon name={icon} size={22} strokeWidth={2} /></span>
+  <h3 class="title">{title}</h3>
+  <span class="divider" aria-hidden="true"></span>
+  <p class="text">{text}</p>
+</div>
+<style>
+  .ui-icard { display: flex; flex-direction: column; gap: 18px; font-family: var(--font-text); height: 100%; }
+  .mark { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 7px; flex-shrink: 0; }
+  .t-dark .mark { background: #C6A15B26; color: #8a6c2f; }
+  .t-light .mark { background: #C6A15B2e; color: var(--color-kit-key1); }
+  .title { font-family: var(--font-head); font-size: clamp(17px, 1.7vw, 19px); font-weight: 700; line-height: 1.32; letter-spacing: -0.012em; margin: 0; }
+  .text { margin: 0; font-size: 15px; line-height: 1.62; }
+  .t-dark .title { color: var(--color-kit-black); }
+  .t-dark .text { color: #0B1A26ad; }
+  .t-light .title { color: #ffffff; }
+  .t-light .text { color: #ffffffa6; }
+  .divider { height: 1px; width: 34px; margin: 2px 0 0; }
+  .t-dark .divider { background: #0B1A2617; }
+  .t-light .divider { background: #ffffff26; }
+</style>

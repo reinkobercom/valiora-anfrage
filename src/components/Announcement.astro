@@ -1,0 +1,61 @@
+---
+/** Hinweisleiste oben (Daten: src/data/announcements.ts). Zeitfenster wird im Browser geprüft. */
+import { announcements } from '../data/announcements';
+const list = announcements.filter((a) => a.visible);
+---
+{list.length > 0 && (
+  <div class="announce" data-announce>
+    {list.map((a, i) => (
+      <div class="announce-item" data-from={a.visibleFrom} data-until={a.visibleUntil} hidden={i > 0 || Boolean(a.visibleFrom || a.visibleUntil) ? true : undefined}>
+        <span class="dot" />
+        <span class="txt">{a.text}</span>
+      </div>
+    ))}
+  </div>
+)}
+<script is:inline>
+  (function () {
+    var bar = document.querySelector('[data-announce]');
+    if (!bar) return;
+    var today = new Date().toISOString().slice(0, 10);
+    var items = bar.querySelectorAll('.announce-item');
+    var shown = false;
+    items.forEach(function (el) {
+      var from = el.getAttribute('data-from'), until = el.getAttribute('data-until');
+      var ok = !shown && (!from || today >= from) && (!until || today <= until);
+      el.hidden = !ok; if (ok) shown = true;
+    });
+    if (!shown) bar.hidden = true;
+  })();
+</script>
+<style>
+  .announce {
+    position: relative;
+    z-index: 2;
+    background: #00000038;
+    border-bottom: 1px solid #ffffff14;
+  }
+  .announce[hidden] { display: none; }
+  .announce-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 11px 20px;
+    text-align: center;
+  }
+  .announce-item[hidden] { display: none; }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--accent, #C6A15B);
+    flex-shrink: 0;
+  }
+  .txt {
+    font-size: 12.5px;
+    letter-spacing: 0.05em;
+    color: #ffffffb8;
+    font-weight: 500;
+  }
+</style>

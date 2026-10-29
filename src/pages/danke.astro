@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import Danke from '../components/danke/Danke.astro';
+import { pages, show } from '../data/sections';
+import { meta } from '../data/content/danke';
+const p = pages['/danke'];
+---
+<Base title={meta.title} description={meta.description} noindex={p.noindex} bodyBg="var(--color-kit-light)">
+  {show('/danke', 'danke') && <Danke />}
+</Base>

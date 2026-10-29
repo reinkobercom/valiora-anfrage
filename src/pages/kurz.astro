@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/kurz/Hero.astro';
+import Beweis from '../components/kurz/Beweis.astro';
+import { pages, show } from '../data/sections';
+import { meta } from '../data/content/kurz';
+const p = pages['/kurz'];
+---
+<Base title={meta.title} description={meta.description} noindex={p.noindex} bodyBg="var(--color-kit-light)">
+  {show('/kurz', 'hero') && <Hero />}
+  {show('/kurz', 'beweis') && <Beweis />}
+</Base>

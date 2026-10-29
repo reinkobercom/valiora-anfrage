@@ -1,0 +1,129 @@
+---
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-700.css';
+import '@fontsource/manrope/latin-600.css';
+import '@fontsource/manrope/latin-700.css';
+import '@fontsource/manrope/latin-800.css';
+import '../styles/global.css';
+import interWoff2 from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
+import manropeWoff2 from '@fontsource/manrope/files/manrope-latin-800-normal.woff2?url';
+import Analytics from '@vercel/analytics/astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  /** Hintergrundfarbe des <body> (z. B. für Überscroll-Bereich) */
+  bodyBg?: string;
+}
+const { title, description, noindex = false, bodyBg } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(path === '/' ? '/' : path, site.url).href;
+const ogImage = new URL('/og-image.png', site.url).href;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${site.url}/#organization`,
+    name: site.name,
+    slogan: site.claim,
+    description:
+      'VALIORA übernimmt Mitarbeitergewinnung, Klientengewinnung und den kompletten Marken- und Online-Auftritt für Pflegeunternehmen – pro Region exklusiv für ein Unternehmen.',
+    url: site.url,
+    logo: new URL('/favicon-512.png', site.url).href,
+    image: ogImage,
+    telephone: site.contact.phone.replace(/\s/g, ''),
+    email: site.contact.email,
+    areaServed: [
+      { '@type': 'Country', name: 'Deutschland' },
+      { '@type': 'Country', name: 'Österreich' },
+    ],
+    knowsAbout: ['Recruiting in der Pflege', 'Klientengewinnung', 'Lokales SEO', 'Marketing für Pflegedienste'],
+    founder: { '@type': 'Person', name: site.person.name, jobTitle: 'Geschäftsführer' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${site.url}/#website`,
+    name: `${site.name} – ${site.claim}`,
+    url: site.url,
+    inLanguage: 'de-DE',
+    publisher: { '@id': `${site.url}/#organization` },
+  },
+];
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap.xml" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#12293A" />
+
+    <link rel="preload" href={manropeWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content={`${site.name} – ${site.claim}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Aktiviert die Einblend-Animationen nur, wenn JavaScript läuft -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <slot name="head" />
+  </head>
+  <body style={bodyBg ? `background:${bodyBg}` : undefined}>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <main id="main">
+      <slot />
+    </main>
+    <CookieBanner />
+    <Analytics />
+
+    <script>
+      // Einblend-Animationen (Ersatz für framer-motion whileInView / animate)
+      const els = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+      const onLoad = els.filter((el) => el.hasAttribute('data-reveal-load'));
+      requestAnimationFrame(() => requestAnimationFrame(() => onLoad.forEach((el) => el.classList.add('is-in'))));
+      const byAmount = new Map<number, HTMLElement[]>();
+      els.filter((el) => !el.hasAttribute('data-reveal-load')).forEach((el) => {
+        const amt = Number(el.dataset.amount ?? 0.3);
+        byAmount.set(amt, [...(byAmount.get(amt) ?? []), el]);
+      });
+      if (!('IntersectionObserver' in window)) {
+        els.forEach((el) => el.classList.add('is-in'));
+      } else {
+        byAmount.forEach((list, amount) => {
+          const io = new IntersectionObserver(
+            (entries) => entries.forEach((e) => {
+              if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+            }),
+            { threshold: amount },
+          );
+          list.forEach((el) => io.observe(el));
+        });
+      }
+    </script>
+  </body>
+</html>

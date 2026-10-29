@@ -1,0 +1,261 @@
+---
+import { Image } from 'astro:assets';
+import Announcement from '../Announcement.astro';
+import Badge from '../ui/Badge.astro';
+import Title from '../ui/Title.astro';
+import Text from '../ui/Text.astro';
+import Button from '../ui/Button.astro';
+import CheckItem from '../ui/CheckItem.astro';
+import Field from '../ui/Field.astro';
+import { hero, form } from '../../data/content/home';
+import { images } from '../../data/images';
+import { site } from '../../data/site';
+---
+<section class="hero" style="background: var(--color-kit-dark); --accent: var(--color-kit-key1);">
+  <div class="glowA" aria-hidden="true"></div>
+  <div class="glowB" aria-hidden="true"></div>
+  <div class="grid" aria-hidden="true"></div>
+
+  <Announcement />
+
+  <div class="container">
+    <header class="top">
+      <a class="brand" href="#region-check" aria-label={`${site.name} – zur Verfügbarkeitsprüfung`}>
+        <Image class="logo" src={images.logoHell.src} alt={images.logoHell.alt} height={42} widths={[168, 336, 504]} sizes="168px" loading="eager" fetchpriority="high" />
+      </a>
+      <div class="topCta">
+        <Button href="#region-check" variant="ghostLight" size="sm" icon="arrowRight">{hero.headerCtaLabel}</Button>
+      </div>
+    </header>
+
+    <div class="split">
+      <div class="left">
+        <div><Badge variant="gold" dot>{hero.badge}</Badge></div>
+        <div>
+          <Title as="h1" size="xl" color="var(--color-kit-white)" class="h1">
+            {hero.headline} <span class="accentWord">{hero.headlineAccent}</span>
+          </Title>
+        </div>
+        <div><Text size="lg" color="#ffffffbf" class="sub">{hero.subline}</Text></div>
+        <ul class="bullets">
+          {hero.bullets.map((b) => <CheckItem tone="light" size="md">{b}</CheckItem>)}
+        </ul>
+        <div class="stats">
+          {hero.stats.map((s) => (
+            <div class="stat">
+              <span class="statValue">{s.value}</span>
+              <span class="statLabel">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="right" id="region-check">
+        <div class="card" data-form-card>
+          <div class="cardEdge" aria-hidden="true"></div>
+          <div class="cardBody">
+            <span class="eyebrow">{form.eyebrow}</span>
+            <Title as="h2" size="md" class="cardH"><span data-step-title data-t1={form.title} data-t2={form.step2Title}>{form.title}</span></Title>
+
+            <form
+              class="form"
+              action="/api/anfrage"
+              method="post"
+              novalidate
+              data-region-form
+              data-redirect={form.redirectUrl}
+              data-err-required={form.errRequired}
+              data-err-email={form.errEmail}
+              data-err-submit={form.errSubmit}
+              data-phone-hint={`Oder rufen Sie uns an: ${site.contact.phone}`}
+            >
+              <input type="hidden" name="quelle" value="/" />
+              <div class="hp-field" aria-hidden="true">
+                <label for="vr-website">Bitte leer lassen</label>
+                <input id="vr-website" type="text" name="website" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <div class="stepBox" data-step="1">
+                <Field id="vr-region" name="region" label={form.regionLabel} placeholder={form.regionPlaceholder} required autocomplete="postal-code" />
+                <Button variant="gold" size="lg" full icon="arrowRight" data-next>{form.step1Cta}</Button>
+                <span class="fine">{form.reassurance}</span>
+              </div>
+
+              <div class="stepBox" data-step="2">
+                <span class="note">{form.step2Note}</span>
+                <div class="row2">
+                  <Field id="vr-name" name="name" label={form.labelName} required autocomplete="name" />
+                  <Field id="vr-company" name="unternehmen" label={form.labelCompany} required autocomplete="organization" />
+                </div>
+                <div class="row2">
+                  <Field id="vr-phone" name="telefon" type="tel" label={form.labelPhone} required autocomplete="tel" inputmode="tel" />
+                  <Field id="vr-email" name="email" type="email" label={form.labelEmail} required autocomplete="email" inputmode="email" />
+                </div>
+                <Button type="submit" variant="gold" size="lg" full icon="arrowRight" data-submit>{form.submitLabel}</Button>
+                <span class="errLine" data-err-line role="alert"></span>
+                <span class="fine">
+                  {form.privacyNote}{' '}
+                  <a class="privacyLink tap" href={site.legal.datenschutz}>{form.privacyLinkLabel}</a>
+                </span>
+                <button class="back" type="button" data-back>{form.backLabel}</button>
+              </div>
+            </form>
+
+            <div class="steps" aria-hidden="true">
+              <span class="pip on" data-pip></span>
+              <span class="pip" data-pip></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/region-form';
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding: 0 0 clamp(56px, 7vw, 96px);
+    font-family: var(--font-text);
+  }
+  .glowA, .glowB, .grid { position: absolute; pointer-events: none; z-index: 0; }
+  .glowA {
+    top: -18%; right: -10%;
+    width: 780px; height: 780px;
+    background: radial-gradient(circle at center, #C6A15B33 0%, #C6A15B00 62%);
+  }
+  .glowB {
+    bottom: -32%; left: -16%;
+    width: 720px; height: 720px;
+    background: radial-gradient(circle at center, #1D3E5699 0%, #1D3E5600 66%);
+  }
+  .grid {
+    inset: 0;
+    background-image: linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+    background-size: 78px 78px;
+    -webkit-mask-image: linear-gradient(180deg, #000000 0%, #00000000 72%);
+    mask-image: linear-gradient(180deg, #000000 0%, #00000000 72%);
+  }
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 40px);
+  }
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 0 clamp(30px, 4.5vw, 54px);
+    border-bottom: 1px solid #ffffff12;
+    margin-bottom: clamp(32px, 5vw, 58px);
+  }
+  .brand { text-decoration: none; display: inline-flex; align-items: center; }
+  .brand :global(.logo) { display: block; height: 42px; width: auto; }
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+    gap: clamp(34px, 4.5vw, 66px);
+    align-items: start;
+  }
+  .left { display: flex; flex-direction: column; gap: 22px; }
+  .left :global(.h1) { margin-top: 4px; }
+  .accentWord { color: var(--accent, #C6A15B); }
+  .left :global(.sub) { max-width: 33em; }
+  .bullets { display: flex; flex-direction: column; gap: 13px; margin: 4px 0 0; padding: 0; }
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    border-top: 1px solid #ffffff17;
+    padding-top: 22px;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-right: clamp(18px, 3vw, 34px);
+    margin-right: clamp(18px, 3vw, 34px);
+    border-right: 1px solid #ffffff17;
+  }
+  .stat:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+  .statValue {
+    font-family: var(--font-head);
+    font-size: clamp(26px, 3vw, 34px);
+    font-weight: 800;
+    line-height: 1;
+    color: var(--accent, #C6A15B);
+    letter-spacing: -0.02em;
+  }
+  .statLabel { font-size: 12.5px; color: #ffffff8f; letter-spacing: 0.02em; }
+  .right { position: relative; }
+  .card {
+    position: relative;
+    background: var(--color-kit-white, #ffffff);
+    border-radius: 6px;
+    box-shadow: 0 40px 90px -40px #000000a6;
+    overflow: hidden;
+  }
+  .cardEdge {
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent, #C6A15B) 0%, #e2c894 52%, var(--accent, #C6A15B) 100%);
+  }
+  .cardBody { padding: clamp(24px, 3vw, 34px); display: flex; flex-direction: column; gap: 14px; }
+  .eyebrow {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a6c2f;
+  }
+  .cardBody :global(.cardH) { margin-bottom: 2px; }
+  .form, .stepBox { display: flex; flex-direction: column; gap: 14px; }
+  .stepBox[hidden] { display: none; }
+  .note { font-size: 14px; line-height: 1.55; color: #1D3E56b3; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .fine { font-size: 12.5px; color: #1D3E5699; text-align: center; line-height: 1.5; }
+  .privacyLink { color: #8a6c2f; text-decoration: underline; text-underline-offset: 2px; }
+  .privacyLink:hover { color: var(--color-kit-key2, #1D3E56); }
+  .errLine { font-size: 12.5px; color: #b0402f; font-weight: 500; }
+  .errLine:empty { display: none; }
+  .back {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: #1D3E5699;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 4px;
+    align-self: center;
+    /* 44px Klickfläche, optisch gleich groß wie im Original */
+    min-height: 44px;
+    min-width: 44px;
+    margin: -10px 0;
+  }
+  .back:hover { color: var(--color-kit-key2, #1D3E56); }
+  .form:not(.is-enhanced) .back { display: none; }
+  .steps { display: flex; gap: 6px; justify-content: center; padding-top: 4px; }
+  .pip { width: 26px; height: 3px; border-radius: 999px; background: #1D3E5626; }
+  .pip.on { background: var(--accent, #C6A15B); }
+
+  @media (max-width: 980px) {
+    .split { grid-template-columns: 1fr; gap: 34px; }
+  }
+  @media (max-width: 620px) {
+    .topCta { display: none; }
+    .row2 { grid-template-columns: 1fr; }
+    .stat { padding-right: 16px; margin-right: 16px; }
+    .top { padding-bottom: 24px; margin-bottom: 26px; }
+  }
+</style>

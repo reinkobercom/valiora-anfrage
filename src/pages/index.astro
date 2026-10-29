@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import Beweis from '../components/home/Beweis.astro';
+import Schmerz from '../components/home/Schmerz.astro';
+import Mechanismus from '../components/home/Mechanismus.astro';
+import Ansprechpartner from '../components/home/Ansprechpartner.astro';
+import Verlust from '../components/home/Verlust.astro';
+import Faq from '../components/home/Faq.astro';
+import Abschluss from '../components/home/Abschluss.astro';
+import { pages, show } from '../data/sections';
+import { meta, faq } from '../data/content/home';
+
+const p = pages['/'];
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.items.map((i) => ({ '@type': 'Question', name: i.question, acceptedAnswer: { '@type': 'Answer', text: i.answer } })),
+};
+---
+<Base title={meta.title} description={meta.description} noindex={p.noindex} bodyBg="var(--color-kit-black)">
+  {show('/', 'faq') && <script slot="head" type="application/ld+json" set:html={JSON.stringify(faqLd)} />}
+  {show('/', 'hero') && <Hero />}
+  {show('/', 'beweis') && <Beweis />}
+  {show('/', 'schmerz') && <Schmerz />}
+  {show('/', 'mechanismus') && <Mechanismus />}
+  {show('/', 'ansprechpartner') && <Ansprechpartner />}
+  {show('/', 'verlust') && <Verlust />}
+  {show('/', 'faq') && <Faq />}
+  {show('/', 'abschluss') && <Abschluss />}
+</Base>

@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/ui/Button.astro';
+---
+<Base title="Seite nicht gefunden | VALIORA" description="Diese Seite gibt es nicht (mehr)." noindex bodyBg="var(--color-kit-dark)">
+  <section class="nf">
+    <p class="code">404</p>
+    <h1 class="ui-title s-lg" style="color:#fff">Diese Seite gibt es nicht.</h1>
+    <p class="txt">Vielleicht hat sich die Adresse geändert. Auf der Startseite können Sie prüfen, ob Ihre Region noch frei ist.</p>
+    <Button href="/" variant="gold" size="lg" icon="arrowRight">Zur Startseite</Button>
+  </section>
+</Base>
+<style>
+  .nf { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 40px 20px; text-align: center; background: var(--color-kit-dark); }
+  .code { font-family: var(--font-head); font-weight: 800; font-size: 14px; letter-spacing: 0.2em; color: var(--color-kit-key1); }
+  .txt { max-width: 32em; color: #ffffffb3; font-size: 17px; line-height: 1.6; }
+</style>

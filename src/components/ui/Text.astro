@@ -1,0 +1,5 @@
+---
+interface Props { as?: 'p' | 'span' | 'div'; size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; align?: 'left' | 'center' | 'right'; tone?: 'muted' | 'soft'; color?: string; class?: string }
+const { as: Tag = 'p', size = 'md', align, tone, color, class: cls } = Astro.props;
+---
+<Tag class:list={['ui-text', `s-${size}`, tone && `t-${tone}`, align && `a-${align}`, cls]} style={color ? `color:${color}` : undefined}><slot /></Tag>

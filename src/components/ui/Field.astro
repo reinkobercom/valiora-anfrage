@@ -1,0 +1,22 @@
+---
+/** Formularfeld 1:1 nach @siteui/field. Fehlermeldung wird per JS in .err geschrieben. */
+interface Props {
+  id: string; name: string; label: string; type?: string; placeholder?: string; required?: boolean;
+  autocomplete?: string; inputmode?: string; options?: { value: string; label: string }[]; rows?: number; class?: string;
+}
+const { id, name, label, type = 'text', placeholder, required = false, autocomplete, inputmode, options = [], rows = 4, class: cls } = Astro.props;
+const errId = `${id}-err`;
+---
+<div class:list={['ui-field', cls]} data-field={name}>
+  <label class="label" for={id}>{label}{required && <span class="req" aria-hidden="true">*</span>}</label>
+  {type === 'select' ? (
+    <select id={id} name={name} class="control" required={required} aria-describedby={errId}>
+      {options.map((o) => <option value={o.value}>{o.label}</option>)}
+    </select>
+  ) : type === 'textarea' ? (
+    <textarea id={id} name={name} class="control" placeholder={placeholder} required={required} rows={rows} aria-describedby={errId} />
+  ) : (
+    <input id={id} name={name} class="control" type={type} placeholder={placeholder} required={required} autocomplete={autocomplete} inputmode={inputmode as any} aria-describedby={errId} />
+  )}
+  <span class="err" id={errId} aria-live="polite"></span>
+</div>

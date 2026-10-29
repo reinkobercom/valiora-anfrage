@@ -1,0 +1,97 @@
+---
+import Title from '../ui/Title.astro';
+import Text from '../ui/Text.astro';
+import { schmerz as c } from '../../data/content/home';
+---
+<section class="wrap" style="background: var(--color-kit-black); --accent: var(--color-kit-key1);">
+  <div class="veil" aria-hidden="true"></div>
+  <div class="container">
+    <div class="head" data-reveal data-amount="0.3">
+      <span class="kicker">{c.kicker}</span>
+      <Title as="h2" size="lg" color="var(--color-kit-white)" class="h2">{c.headline}</Title>
+      <Text size="lg" color="#ffffffab" class="intro">{c.intro}</Text>
+    </div>
+    <ol class="list">
+      {c.items.map((it, i) => (
+        <li class="row" data-reveal data-amount="0.4" style={`--ry: 22px; --rdur: 0.55s; --rdelay: ${i * 0.1}s;`}>
+          <span class="num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <div class="rowBody">
+            <h3 class="rowTitle">{it.title}</h3>
+            <p class="rowText">{it.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="closer" data-reveal="fade" data-amount="0.6" style="--rdur: 0.7s; --rdelay: 0.15s;">{c.closer}</p>
+  </div>
+</section>
+
+<style>
+  .wrap { position: relative; overflow: hidden; padding: clamp(70px, 9vw, 126px) 0; font-family: var(--font-text); }
+  .veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(760px 420px at 82% 8%, #1D3E5699 0%, #1D3E5600 70%),
+      radial-gradient(520px 360px at 6% 96%, #C6A15B1f 0%, #C6A15B00 70%);
+  }
+  .container { position: relative; z-index: 1; max-width: 1250px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px); }
+  .head { max-width: 780px; display: flex; flex-direction: column; gap: 16px; }
+  .kicker { font-size: 11.5px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent, #C6A15B); }
+  .head :global(.h2) { max-width: 15em; }
+  .head :global(.intro) { max-width: 40em; }
+  .list { list-style: none; margin: clamp(38px, 5vw, 64px) 0 0; padding: 0; border-top: 1px solid #ffffff1a; }
+  .row {
+    display: grid;
+    grid-template-columns: 108px minmax(0, 1fr);
+    gap: clamp(16px, 3vw, 40px);
+    padding: clamp(26px, 3vw, 38px) 0;
+    border-bottom: 1px solid #ffffff1a;
+    align-items: start;
+  }
+  /* Hover-Hintergrund wie im Original (zusätzlich zur Einblend-Transition) */
+  :global(html.js) .row[data-reveal] {
+    transition:
+      opacity var(--rdur, 0.6s) var(--ease-out) var(--rdelay, 0s),
+      transform var(--rdur, 0.6s) var(--ease-out) var(--rdelay, 0s),
+      background-color 0.25s ease;
+  }
+  .row { transition: background-color 0.25s ease; }
+  .row:hover { background: #ffffff05; }
+  .num {
+    font-family: var(--font-head);
+    font-size: clamp(38px, 5vw, 60px);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: #ffffff1f;
+  }
+  .rowBody { display: flex; flex-direction: column; gap: 10px; max-width: 46em; }
+  .rowTitle {
+    margin: 0;
+    font-family: var(--font-head);
+    font-size: clamp(19px, 2.2vw, 25px);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    color: #ffffff;
+  }
+  .rowText { margin: 0; font-size: clamp(15px, 1.6vw, 17px); line-height: 1.62; color: #ffffffa8; }
+  .closer {
+    margin: clamp(34px, 4vw, 52px) 0 0;
+    max-width: 30em;
+    font-family: var(--font-head);
+    font-size: clamp(18px, 2.1vw, 23px);
+    font-weight: 600;
+    line-height: 1.42;
+    letter-spacing: -0.012em;
+    color: #ffffff;
+    padding-left: 20px;
+    border-left: 3px solid var(--accent, #C6A15B);
+  }
+  @media (max-width: 720px) {
+    .row { grid-template-columns: 1fr; gap: 8px; }
+    .num { font-size: 30px; }
+  }
+</style>

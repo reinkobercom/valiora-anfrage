@@ -1,0 +1,61 @@
+---
+import Title from '../ui/Title.astro';
+import Text from '../ui/Text.astro';
+import Button from '../ui/Button.astro';
+import { verlust as c } from '../../data/content/home';
+---
+<section class="wrap" style="background: var(--color-kit-key2); --accent: var(--color-kit-key1);">
+  <div class="rays" aria-hidden="true"></div>
+  <div class="container">
+    <div class="head" data-reveal data-amount="0.3" style="--rdur: 0.65s;">
+      <span class="kicker">{c.kicker}</span>
+      <Title as="h2" size="xl" align="center" color="var(--color-kit-white)" class="h2">{c.headline}</Title>
+      <Text size="lg" align="center" color="#ffffffb3" class="body">{c.body}</Text>
+    </div>
+    <div class="cols">
+      {c.items.map((it, i) => (
+        <div class="col" data-reveal data-amount="0.4" style={`--ry: 20px; --rdur: 0.5s; --rdelay: ${0.1 + i * 0.1}s;`}>
+          <span class="rule" aria-hidden="true"></span>
+          <p class="colText"><span class="colLead">{it.lead}</span> {it.text}</p>
+        </div>
+      ))}
+    </div>
+    <div class="ctaBox" data-reveal data-amount="0.6" style="--ry: 18px; --rdur: 0.55s; --rdelay: 0.15s;">
+      <Button href="#region-check" variant="gold" size="lg" icon="arrowRight">{c.ctaLabel}</Button>
+      <span class="ctaNote">{c.ctaNote}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .wrap { position: relative; overflow: hidden; padding: clamp(72px, 9.5vw, 132px) 0; font-family: var(--font-text); }
+  .rays {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(900px 480px at 50% -12%, #C6A15B2e 0%, #C6A15B00 68%),
+      linear-gradient(180deg, #0B1A2600 0%, #0B1A2666 100%);
+  }
+  .container { position: relative; z-index: 1; max-width: 1250px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px); }
+  .head { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+  .kicker { font-size: 11.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent, #C6A15B); }
+  .head :global(.h2) { max-width: 15em; }
+  .head :global(.body) { max-width: 40em; }
+  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(22px, 3vw, 46px); margin-top: clamp(44px, 5.5vw, 72px); }
+  .col { display: flex; flex-direction: column; gap: 16px; }
+  .rule { display: block; width: 100%; height: 2px; background: linear-gradient(90deg, var(--accent, #C6A15B) 0%, #ffffff1a 100%); }
+  .colText { margin: 0; font-size: clamp(15px, 1.6vw, 17px); line-height: 1.6; color: #ffffffa6; }
+  .colLead {
+    display: block;
+    font-family: var(--font-head);
+    font-size: clamp(17px, 1.9vw, 20px);
+    font-weight: 700;
+    letter-spacing: -0.012em;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+  .ctaBox { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: clamp(44px, 5.5vw, 74px); }
+  .ctaNote { font-size: 12.5px; color: #ffffff8f; letter-spacing: 0.02em; }
+  @media (max-width: 820px) { .cols { grid-template-columns: 1fr; gap: 26px; } }
+</style>

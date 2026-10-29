@@ -1,0 +1,22 @@
+---
+/** @siteui/section-head */
+interface Props { kicker?: string; title: string; accent?: string; titleEnd?: string; subline?: string; align?: 'center' | 'left'; tone?: 'dark' | 'light'; accentColor?: string; as?: 'h1' | 'h2'; class?: string }
+const { kicker, title, accent, titleEnd, subline, align = 'center', tone = 'dark', accentColor = 'var(--color-kit-key1)', as: Tag = 'h2', class: cls } = Astro.props;
+---
+<div class:list={['ui-shead', `a-${align}`, `t-${tone}`, cls]}>
+  {kicker && <p class="kicker" style={`color:${accentColor}`}>{kicker}</p>}
+  <Tag class="title">{title}{accent && <span style={`color:${accentColor}`}>{accent}</span>}{titleEnd}</Tag>
+  {subline && <p class="subline">{subline}</p>}
+</div>
+<style>
+  .ui-shead { display: flex; flex-direction: column; gap: 18px; font-family: var(--font-text); }
+  .a-center { align-items: center; text-align: center; }
+  .a-left { align-items: flex-start; text-align: left; }
+  .kicker { font-family: var(--font-head); font-size: 11.5px; font-weight: 800; letter-spacing: 0.19em; text-transform: uppercase; line-height: 1; margin: 0; }
+  .title { font-family: var(--font-head); font-weight: 800; font-size: clamp(27px, 3.6vw, 44px); line-height: 1.13; letter-spacing: -0.022em; margin: 0; text-wrap: balance; }
+  .subline { margin: 6px 0 0; font-size: clamp(15.5px, 1.5vw, 17.5px); line-height: 1.65; max-width: 62ch; }
+  .t-dark .title { color: var(--color-kit-black); }
+  .t-dark .subline { color: #0B1A26b0; }
+  .t-light .title { color: #ffffff; }
+  .t-light .subline { color: #ffffffb0; }
+</style>

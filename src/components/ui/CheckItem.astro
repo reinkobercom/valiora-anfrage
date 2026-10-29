@@ -1,0 +1,6 @@
+---
+import Icon from './Icon.astro';
+interface Props { tone?: 'dark' | 'light' | 'plain'; size?: 'sm' | 'md' | 'lg'; icon?: string; class?: string }
+const { tone = 'dark', size = 'md', icon = 'check', class: cls } = Astro.props;
+---
+<li class:list={['ui-check', `t-${tone}`, `s-${size}`, cls]}><span class="mark"><Icon name={icon} size={size === 'sm' ? 12 : 14} strokeWidth={3} /></span><span class="body"><slot /></span></li>

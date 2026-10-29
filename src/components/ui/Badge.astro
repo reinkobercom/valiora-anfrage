@@ -1,0 +1,5 @@
+---
+interface Props { variant?: 'gold' | 'outline' | 'solid' | 'light'; dot?: boolean; class?: string }
+const { variant = 'gold', dot = false, class: cls } = Astro.props;
+---
+<span class:list={['ui-badge', `v-${variant}`, cls]}>{dot && <span class="dot" />}<span class="label"><slot /></span></span>

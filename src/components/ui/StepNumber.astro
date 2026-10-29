@@ -1,0 +1,12 @@
+---
+/** @siteui/step-number */
+interface Props { value: string | number; tone?: 'gold' | 'outline' | 'navy'; class?: string }
+const { value, tone = 'gold', class: cls } = Astro.props;
+---
+<span class:list={['ui-stepnum', `t-${tone}`, cls]}>{value}</span>
+<style>
+  .ui-stepnum { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 6px; flex-shrink: 0; font-family: var(--font-head); font-size: 15px; font-weight: 800; letter-spacing: 0.02em; line-height: 1; }
+  .t-gold { background: var(--color-kit-key1); color: var(--color-kit-black); }
+  .t-outline { background: transparent; border: 1px solid #0B1A2624; color: var(--color-kit-key2); }
+  .t-navy { background: var(--color-kit-key2); color: #ffffff; }
+</style>

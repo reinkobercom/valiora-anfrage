@@ -1,0 +1,42 @@
+---
+/** Icon-Satz 1:1 aus @siteui/icon (Strichstärke/Größe per Prop) */
+interface Props { name: string; size?: number; strokeWidth?: number; class?: string; filled?: boolean }
+const { name, size = 20, strokeWidth = 2, class: cls, filled = false } = Astro.props;
+const PATHS: Record<string, string> = {
+  check: '<polyline points="20 6 9 17 4 12" />',
+  arrowRight: '<line x1="4" y1="12" x2="20" y2="12" /><polyline points="14 6 20 12 14 18" />',
+  arrowDown: '<line x1="12" y1="4" x2="12" y2="20" /><polyline points="6 14 12 20 18 14" />',
+  alert: '<path d="M12 3 2 20h20L12 3z" /><line x1="12" y1="10" x2="12" y2="14" /><line x1="12" y1="17" x2="12.01" y2="17" />',
+  close: '<line x1="5" y1="5" x2="19" y2="19" /><line x1="19" y1="5" x2="5" y2="19" />',
+  shield: '<path d="M12 3l7 3v6c0 4.4-3 8-7 9-4-1-7-4.6-7-9V6l7-3z" />',
+  mapPin: '<path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z" /><circle cx="12" cy="10" r="2.6" />',
+  users: '<path d="M16 20v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20" /><circle cx="9" cy="7" r="3.4" /><path d="M22 20v-1.5a4 4 0 0 0-3-3.8" /><path d="M16.5 3.6a4 4 0 0 1 0 7" />',
+  search: '<circle cx="11" cy="11" r="6.5" /><line x1="16" y1="16" x2="21" y2="21" />',
+  clock: '<circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 15.5 14" />',
+  phone: '<path d="M6 3h3l2 5-2.2 1.4a12 12 0 0 0 5.8 5.8L16 13l5 2v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4 5.2 2 2 0 0 1 6 3z" />',
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2" /><polyline points="3.5 6.5 12 13 20.5 6.5" />',
+  star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8-4.2-4.1 5.9-.9L12 3.5z" />',
+  spark: '<path d="M12 3v4" /><path d="M12 17v4" /><path d="M3 12h4" /><path d="M17 12h4" /><path d="M6 6l2.8 2.8" /><path d="M15.2 15.2 18 18" /><path d="M18 6l-2.8 2.8" /><path d="M8.8 15.2 6 18" />',
+  trend: '<polyline points="3 17 9.5 10.5 13.5 14.5 21 7" /><polyline points="15.5 7 21 7 21 12.5" />',
+  lock: '<rect x="4.5" y="10" width="15" height="10" rx="2" /><path d="M8 10V7.5a4 4 0 0 1 8 0V10" />',
+  plus: '<line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />',
+  minus: '<line x1="5" y1="12" x2="19" y2="12" />',
+  play: '<polygon points="8 5 19 12 8 19 8 5" />',
+  target: '<circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.4" /><circle cx="12" cy="12" r="1" />',
+  euro: '<path d="M17.6 6.6A6.6 6.6 0 0 0 7 12a6.6 6.6 0 0 0 10.6 5.4" /><line x1="4.4" y1="10.4" x2="12.6" y2="10.4" /><line x1="4.4" y1="13.6" x2="12.6" y2="13.6" />',
+  chat: '<path d="M20 4H4a1.6 1.6 0 0 0-1.6 1.6v8.8A1.6 1.6 0 0 0 4 16h3v4.2L12.4 16H20a1.6 1.6 0 0 0 1.6-1.6V5.6A1.6 1.6 0 0 0 20 4z" />',
+  calendar: '<rect x="3.5" y="5" width="17" height="15" rx="2" /><line x1="3.5" y1="9.6" x2="20.5" y2="9.6" /><line x1="8" y1="3" x2="8" y2="6.6" /><line x1="16" y1="3" x2="16" y2="6.6" />',
+  headset: '<path d="M4.2 14.2v-2.2a7.8 7.8 0 0 1 15.6 0v2.2" /><rect x="2.4" y="13.4" width="4.2" height="6.6" rx="1.7" /><rect x="17.4" y="13.4" width="4.2" height="6.6" rx="1.7" />',
+  laptop: '<rect x="4" y="5" width="16" height="11" rx="1.7" /><line x1="2" y1="19.6" x2="22" y2="19.6" />',
+  upload: '<path d="M12 16V4.2" /><polyline points="7 9.2 12 4.2 17 9.2" /><path d="M4 15v3.6A1.6 1.6 0 0 0 5.6 20.2h12.8A1.6 1.6 0 0 0 20 18.6V15" />',
+  award: '<circle cx="12" cy="9" r="5.6" /><polyline points="8.4 13.6 7.4 21 12 18.4 16.6 21 15.6 13.6" />',
+  doc: '<path d="M14 3H7a1.6 1.6 0 0 0-1.6 1.6v14.8A1.6 1.6 0 0 0 7 21h10a1.6 1.6 0 0 0 1.6-1.6V7.6L14 3z" /><polyline points="13.8 3.2 13.8 8 18.4 8" />',
+  refresh: '<polyline points="20 4.6 20 10 14.6 10" /><path d="M19.4 10a7.6 7.6 0 1 0-1.2 5.8" />',
+  list: '<line x1="9" y1="7" x2="20" y2="7" /><line x1="9" y1="12" x2="20" y2="12" /><line x1="9" y1="17" x2="20" y2="17" /><circle cx="4.6" cy="7" r="1.1" /><circle cx="4.6" cy="12" r="1.1" /><circle cx="4.6" cy="17" r="1.1" />',
+  globe: '<circle cx="12" cy="12" r="8.5" /><line x1="3.5" y1="12" x2="20.5" y2="12" /><path d="M12 3.5a13.5 13.5 0 0 1 0 17 13.5 13.5 0 0 1 0-17z" />',
+  zap: '<polygon points="13 2.5 5 13.6 11 13.6 10 21.5 19 10.2 13 10.2 13 2.5" />',
+  heart: '<path d="M12 20.2s-7.2-4.6-7.2-9.7A4.1 4.1 0 0 1 12 7a4.1 4.1 0 0 1 7.2 3.5c0 5.1-7.2 9.7-7.2 9.7z" />',
+};
+const glyph = PATHS[name] ?? PATHS.check;
+---
+<svg class={cls} width={size} height={size} viewBox="0 0 24 24" fill={filled ? 'currentColor' : 'none'} stroke={filled ? 'none' : 'currentColor'} stroke-width={strokeWidth} stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="display:block;flex-shrink:0" set:html={glyph} />

@@ -1,0 +1,14 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  href?: string; type?: 'button' | 'submit'; variant?: 'gold' | 'navy' | 'outline' | 'ghostLight';
+  size?: 'sm' | 'md' | 'lg'; full?: boolean; icon?: string; class?: string; [key: string]: unknown;
+}
+const { href, type = 'button', variant = 'gold', size = 'md', full = false, icon, class: cls, ...rest } = Astro.props;
+const classes = ['ui-btn', `v-${variant}`, `s-${size}`, full && 'full', cls];
+---
+{href ? (
+  <a class:list={classes} href={href} {...rest}><span class="label"><slot /></span>{icon && <span class="ico"><Icon name={icon} size={18} strokeWidth={2.3} /></span>}</a>
+) : (
+  <button class:list={classes} type={type} {...rest}><span class="label"><slot /></span>{icon && <span class="ico"><Icon name={icon} size={18} strokeWidth={2.3} /></span>}</button>
+)}
