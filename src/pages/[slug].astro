@@ -1,0 +1,25 @@
+---
+/**
+ * Optionale Seiten. Ob sie gebaut werden, steuert `enabled` in src/data/sections.ts.
+ * Ausgeschaltete Seiten werden gar nicht erzeugt (Aufruf → 404) und stehen nicht in der Sitemap.
+ */
+import { pages } from '../data/sections';
+
+const views = import.meta.glob<{ default: any }>('../views/*.astro', { eager: true });
+const MAP: Record<string, string> = {
+  'ki-regio-system': '../views/KiRegioSystem.astro',
+  karriere: '../views/Karriere.astro',
+  'karriere-danke': '../views/KarriereDanke.astro',
+};
+
+export function getStaticPaths() {
+  const all = ['ki-regio-system', 'karriere', 'karriere-danke'] as const;
+  return all
+    .filter((slug) => pages[`/${slug}`].enabled)
+    .map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const View = views[MAP[slug!]]?.default;
+---
+{View && <View />}
