@@ -32,10 +32,9 @@ import { site, telHref } from '../../data/site';
       <nav class="fLegal" aria-label="Rechtliches">
         <a class="fLink tap" href={site.legal.impressum}>Impressum</a>
         <a class="fLink tap" href={site.legal.datenschutz}>Datenschutz</a>
-        <a class="fLink tap" href="#cookie-einstellungen" data-cookie-settings>Cookie-Einstellungen</a>
       </nav>
     </footer>
-    <p class="copy">{site.copyright}</p>
+    <p class="copy">{site.copyright}<span class="sep" aria-hidden="true"> · </span><a class="copyLink tap" href="#cookie-einstellungen" data-cookie-settings>Cookie-Einstellungen</a></p>
   </div>
 </section>
 
@@ -95,6 +94,8 @@ import { site, telHref } from '../../data/site';
   }
   .fLink:hover { color: #ffffff; border-color: var(--accent, #C6A15B); }
   .copy { margin: 26px 0 0; font-size: 12px; color: #ffffff59; letter-spacing: 0.02em; }
+  .copyLink { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.18s ease, border-color 0.18s ease; }
+  .copyLink:hover { color: #ffffffa6; border-color: var(--accent, #C6A15B); }
   @media (max-width: 700px) {
     .footer { flex-direction: column; align-items: flex-start; gap: 18px; }
   }

@@ -90,10 +90,10 @@ Der Key gehört **nie** ins Repository. Für lokale Tests eine Datei `.env` anle
 
 Die Seite läuft auf der Subdomain **go**. Beim DNS-Anbieter von `valiora-partner.de`:
 
-1. Den bestehenden Eintrag für `go` (heute auf Onepage) **entfernen**.
-2. Neu anlegen: `CNAME` · Name `go` · Ziel = der Wert, den Vercel unter
-   Projekt → Settings → Domains für `go.valiora-partner.de` anzeigt (in der Regel `cname.vercel-dns.com`
-   bzw. ein projektspezifischer `…vercel-dns-….com`-Wert).
+1. Den bestehenden Eintrag für `go` (heute `CNAME whitelabel.onepage.io`) **entfernen** bzw. ändern.
+2. Neu anlegen: `CNAME` · Name `go` · Ziel `805b9082c953fbbf.vercel-dns-016.com.`
+   (so von Vercel unter Projekt → Settings → Domains angezeigt; Alternative: `cname.vercel-dns.com.`).
+   DNS-Anbieter laut Nameservern: cloudpit (cns1.cloudpit.de).
 3. **Nicht anfassen:** A-Record für `@`, `www`, alle **MX**- und **TXT**-Einträge der Hauptdomain –
    sonst funktionieren valiora-partner.de oder Ihre E-Mails nicht mehr.
 4. Die Resend-Einträge (SPF/DKIM) gehören zur Versand-Domain `reinkober-leadportal.com` und
