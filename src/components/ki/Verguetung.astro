@@ -1,0 +1,93 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import { verguetung as c } from '../../data/content/kiRegioSystem';
+---
+<section class="root" style="background: var(--color-kit-black); --accent: var(--color-kit-key1);">
+  <div class="container">
+    <div class="head">
+      <SectionHead kicker={c.kicker} title={c.titleStart} accent={c.titleAccent} titleEnd={c.titleEnd} subline={c.subline} align="center" tone="light" />
+    </div>
+
+    <ul class="grid">
+      {c.items.map((p, i) => (
+        <li class="cell" data-reveal data-amount="0.3" style={`--ry: 20px; --rdur: 0.5s; --rdelay: ${(i * 0.09).toFixed(2)}s;`}>
+          <p class="label">{p.label}</p>
+          <h3 class="title">{p.title}</h3>
+          <p class="text">{p.text}</p>
+        </li>
+      ))}
+    </ul>
+
+    <p class="highlight">{c.highlight}</p>
+    <p class="note">{c.note}</p>
+  </div>
+</section>
+
+<style>
+  .root {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding: clamp(84px, 9vw, 148px) 20px;
+    font-family: var(--font-text);
+  }
+  .root::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, #1D3E5645 0%, #1D3E5600 58%);
+  }
+  .container { max-width: 1120px; margin: 0 auto; width: 100%; }
+  .head { margin-bottom: clamp(56px, 6.2vw, 92px); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(30px, 4vw, 62px);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .cell { padding-left: clamp(24px, 2.8vw, 42px); border-left: 1px solid #ffffff1f; }
+  .cell:first-child { padding-left: 0; border-left: none; }
+  .label {
+    display: inline-block;
+    font-family: var(--font-head);
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+    color: var(--accent);
+  }
+  .title {
+    font-family: var(--font-head);
+    font-size: clamp(20px, 2.1vw, 25px);
+    font-weight: 800;
+    letter-spacing: -0.018em;
+    line-height: 1.2;
+    color: #ffffff;
+    margin: 0 0 16px;
+  }
+  .text { margin: 0; font-size: 14.5px; line-height: 1.68; color: #ffffffa3; }
+  .highlight {
+    margin: clamp(56px, 6vw, 88px) 0 0;
+    padding: clamp(28px, 3vw, 40px) clamp(26px, 3vw, 44px);
+    border-radius: 8px;
+    border: 1px solid #ffffff1f;
+    background: #ffffff08;
+    font-family: var(--font-head);
+    font-size: clamp(17px, 1.9vw, 22px);
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: -0.014em;
+    color: #ffffff;
+    text-wrap: balance;
+  }
+  .note { margin: 26px 0 0; font-size: 13.5px; line-height: 1.66; color: #ffffff85; max-width: 74ch; }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; gap: 34px; }
+    .cell { padding-left: 0; padding-top: 30px; border-left: none; border-top: 1px solid #ffffff1f; }
+    .cell:first-child { padding-top: 0; border-top: none; }
+  }
+</style>

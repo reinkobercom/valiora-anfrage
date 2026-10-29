@@ -1,0 +1,145 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../ui/Icon.astro';
+import SectionHead from '../ui/SectionHead.astro';
+import { ansprechpartner as c } from '../../data/content/kiRegioSystem';
+import { images } from '../../data/images';
+import { site, telHref } from '../../data/site';
+---
+<section class="root" style="background: var(--color-kit-black); --accent: var(--color-kit-key1);">
+  <div class="container">
+    <div class="grid">
+      <div>
+        <div class="head">
+          <SectionHead kicker={c.kicker} title={c.titleStart} accent={c.titleAccent} titleEnd={c.titleEnd} align="left" tone="light" />
+        </div>
+        <p class="body">{c.body}</p>
+      </div>
+
+      <div class="card" data-reveal data-amount="0.25" style="--ry: 24px; --rdur: 0.6s;">
+        <div class="person">
+          <Image class="avatar" src={images.simon.src} alt={images.simon.alt} width={62} height={62} widths={[62, 124, 186]} sizes="62px" fit="cover" position="top" format="webp" />
+          <div>
+            <h3 class="name">{site.person.name}</h3>
+            <p class="role">{c.personRole}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <span class="rowIcon"><Icon name="phone" size={17} strokeWidth={2} /></span>
+          <div>
+            <p class="rowLabel">{c.phoneLabel}</p>
+            <a class="rowValue tap" href={telHref(site.contact.phone)}>{site.contact.phone}</a>
+          </div>
+        </div>
+
+        <div class="row">
+          <span class="rowIcon"><Icon name="mail" size={17} strokeWidth={2} /></span>
+          <div>
+            <p class="rowLabel">{c.mailLabel}</p>
+            <a class="rowValue tap" href={`mailto:${site.contact.personEmail}`}>{site.contact.personEmail}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .root {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding: clamp(84px, 9vw, 148px) 20px;
+    font-family: var(--font-text);
+  }
+  .root::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(70% 62% at 88% 22%, #C6A15B17 0%, #C6A15B00 66%);
+  }
+  .container { max-width: 1120px; margin: 0 auto; width: 100%; }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(44px, 6vw, 92px);
+    align-items: center;
+  }
+  .grid > * { min-width: 0; }
+  .head { margin-bottom: 26px; }
+  .body { margin: 0; font-size: 15.5px; line-height: 1.72; color: #ffffffb0; max-width: 52ch; }
+  .card {
+    border: 1px solid #ffffff1f;
+    background: #ffffff08;
+    border-radius: 8px;
+    padding: clamp(28px, 3vw, 40px);
+  }
+  .person {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #ffffff17;
+  }
+  .person :global(.avatar) {
+    width: 62px;
+    height: 62px;
+    border-radius: 999px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid #ffffff26;
+  }
+  .name {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.014em;
+    color: #ffffff;
+    margin: 0;
+  }
+  .role { margin: 5px 0 0; font-size: 13px; line-height: 1.5; color: #ffffff8f; }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 17px 0;
+    border-bottom: 1px solid #ffffff12;
+  }
+  .row:last-child { border-bottom: none; padding-bottom: 0; }
+  .rowIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    background: #C6A15B24;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  .rowLabel {
+    margin: 0;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #ffffff70;
+  }
+  .rowValue {
+    display: inline-block;
+    margin-top: 3px;
+    font-size: 15.5px;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    word-break: break-word;
+  }
+  .rowValue:hover { text-decoration: underline; }
+  .rowValue:focus-visible { outline: 2px solid var(--color-kit-key1); outline-offset: 3px; }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; gap: 40px; }
+    .body { max-width: none; }
+  }
+</style>

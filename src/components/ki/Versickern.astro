@@ -1,0 +1,126 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import { versickern as c } from '../../data/content/kiRegioSystem';
+
+const tracks = [
+  { label: c.trackALabel, events: c.events.filter((e) => e.track === 'a'), highlight: false },
+  { label: c.trackBLabel, events: c.events.filter((e) => e.track === 'b'), highlight: true },
+];
+---
+<section class="root" style="background: var(--color-kit-white); --accent: var(--color-kit-key1);">
+  <div class="container">
+    <div class="grid">
+      <div class="left">
+        <div class="head">
+          <SectionHead kicker={c.kicker} title={c.titleStart} accent={c.titleAccent} titleEnd={c.titleEnd} align="left" tone="dark" />
+        </div>
+        <div class="paras">
+          {c.paragraphs.map((p) => <p class="para">{p}</p>)}
+        </div>
+      </div>
+
+      <div class="right" data-reveal data-amount="0.25" style="--ry: 26px; --rdur: 0.6s;">
+        {tracks.map((t) => (
+          <div class:list={['track', t.highlight && 'trackB']}>
+            <h3 class="trackLabel">{t.label}</h3>
+            <ol class="events">
+              {t.events.map((e) => (
+                <li class="event">
+                  <span class="eventMark" aria-hidden="true">
+                    <span class="eventDot"></span>
+                    <span class="eventLine"></span>
+                  </span>
+                  <div>
+                    <p class="eventTime">{e.time}</p>
+                    <p class="eventText">{e.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+        <p class="note">{c.chartNote}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .root { padding: clamp(84px, 9vw, 148px) 20px; font-family: var(--font-text); }
+  .container { max-width: 1250px; margin: 0 auto; width: 100%; }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(44px, 6vw, 96px);
+    align-items: start;
+  }
+  .left { min-width: 0; }
+  .head { margin-bottom: 34px; }
+  .paras { display: flex; flex-direction: column; gap: 20px; max-width: 52ch; }
+  .para { margin: 0; font-size: 15.5px; line-height: 1.72; color: #0B1A26ad; }
+  .right { min-width: 0; }
+  .track {
+    padding: clamp(24px, 2.6vw, 34px);
+    border-radius: 8px;
+    border: 1px solid #0B1A2612;
+    background: var(--color-kit-light);
+  }
+  .trackB {
+    margin-top: 20px;
+    background: #ffffff;
+    border-color: #C6A15B4d;
+    box-shadow: 0 24px 50px -38px #1D3E5680;
+  }
+  .trackLabel {
+    font-family: var(--font-head);
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin: 0 0 22px;
+    color: #0B1A2687;
+    line-height: 24px;
+  }
+  .trackB .trackLabel { color: #8a6c2f; }
+  .events { list-style: none; margin: 0; padding: 0; }
+  .event {
+    position: relative;
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 14px;
+    padding-bottom: 20px;
+  }
+  .event:last-child { padding-bottom: 0; }
+  .eventMark { position: relative; display: flex; justify-content: center; }
+  .eventDot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    margin-top: 5px;
+    background: #0B1A2630;
+    flex-shrink: 0;
+  }
+  .trackB .eventDot { background: var(--accent); }
+  .eventLine {
+    position: absolute;
+    top: 18px;
+    bottom: -6px;
+    width: 1px;
+    background: #0B1A261f;
+  }
+  .event:last-child .eventLine { display: none; }
+  .eventTime {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: #0B1A2678;
+  }
+  .eventText { margin: 4px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--color-kit-black); }
+  .note { margin: 20px 0 0; font-size: 12px; color: #0B1A2678; }
+  @media (max-width: 980px) {
+    .grid { grid-template-columns: 1fr; gap: 48px; }
+    .paras { max-width: none; }
+  }
+</style>

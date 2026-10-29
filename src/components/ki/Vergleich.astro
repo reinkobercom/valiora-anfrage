@@ -1,0 +1,122 @@
+---
+import Icon from '../ui/Icon.astro';
+import SectionHead from '../ui/SectionHead.astro';
+import { vergleich as c } from '../../data/content/kiRegioSystem';
+
+const srLabel = { yes: c.legendYes, part: c.legendPart, no: c.legendNo } as const;
+---
+<section class="root" style="background: var(--color-kit-white);">
+  <div class="container">
+    <div class="head">
+      <SectionHead kicker={c.kicker} title={c.titleStart} accent={c.titleAccent} titleEnd={c.titleEnd} subline={c.subline} align="center" tone="dark" />
+    </div>
+
+    <div class="scroller" data-reveal data-amount="0.2" style="--ry: 22px; --rdur: 0.6s;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="th thFirst"><span class="sr-only">Kriterium</span></th>
+            {c.columns.map((col) => (
+              <th scope="col" class:list={['th', col.highlight && 'thMain', col.highlight && 'colMain']}>{col.label}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {c.rows.map((r) => (
+            <tr>
+              <th scope="row" class="td tdLabel">{r.label}</th>
+              {c.columns.map((col, j) => {
+                const v = r.values[j] ?? 'no';
+                return (
+                  <td class:list={['td', col.highlight && 'colMain']}>
+                    <span class:list={['mark', v === 'yes' ? 'mYes' : v === 'part' ? 'mPart' : 'mNo']}>
+                      {v === 'yes' ? <Icon name="check" size={14} strokeWidth={3} /> : v === 'part' ? <span class="dash"></span> : <Icon name="close" size={13} strokeWidth={2.6} />}
+                    </span>
+                    <span class="sr-only">{srLabel[v]}</span>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="legend">
+      <span class="legendItem">
+        <span class="mark mYes" aria-hidden="true"><Icon name="check" size={13} strokeWidth={3} /></span>
+        {c.legendYes}
+      </span>
+      <span class="legendItem">
+        <span class="mark mPart" aria-hidden="true"><span class="dash"></span></span>
+        {c.legendPart}
+      </span>
+      <span class="legendItem">
+        <span class="mark mNo" aria-hidden="true"><Icon name="close" size={12} strokeWidth={2.6} /></span>
+        {c.legendNo}
+      </span>
+    </div>
+
+    <p class="note">{c.note}</p>
+  </div>
+</section>
+
+<style>
+  .root { padding: clamp(84px, 9vw, 148px) 20px; font-family: var(--font-text); }
+  .container { max-width: 1120px; margin: 0 auto; width: 100%; }
+  .head { margin-bottom: clamp(56px, 6.2vw, 92px); }
+  .scroller { overflow-x: auto; padding-bottom: 6px; }
+  .table { min-width: 700px; width: 100%; border-collapse: collapse; }
+  .th {
+    padding: 0 0 22px;
+    text-align: center;
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+    color: #0B1A2687;
+    vertical-align: bottom;
+  }
+  .thFirst { text-align: left; width: 38%; }
+  .thMain { color: var(--color-kit-black); font-weight: 800; font-size: 14.5px; }
+  .td {
+    padding: 17px 10px;
+    text-align: center;
+    border-top: 1px solid #0B1A2612;
+    vertical-align: middle;
+  }
+  .tdLabel {
+    text-align: left;
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-kit-black);
+    padding-left: 0;
+    padding-right: 24px;
+  }
+  .colMain { background: #C6A15B0f; }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    vertical-align: middle;
+  }
+  .mYes { background: #C6A15B29; color: #8a6c2f; }
+  .mPart { background: #1D3E5614; color: #1D3E5699; }
+  .mNo { background: #0B1A260a; color: #0B1A2657; }
+  .dash { display: block; width: 10px; height: 1.5px; border-radius: 2px; background: currentColor; }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin-top: 30px;
+    padding-top: 22px;
+    border-top: 1px solid #0B1A2612;
+  }
+  .legendItem { display: inline-flex; align-items: center; gap: 9px; font-size: 12.5px; color: #0B1A268a; }
+  .note { margin: 14px 0 0; font-size: 12px; color: #0B1A2678; }
+</style>

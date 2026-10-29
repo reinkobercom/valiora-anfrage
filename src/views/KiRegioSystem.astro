@@ -1,0 +1,39 @@
+---
+/**
+ * Seite /ki-regio-system – 1:1 aus Onepage übernommen.
+ * Sektionen ein-/ausschalten: src/data/sections.ts → '/ki-regio-system'
+ */
+import Base from '../layouts/Base.astro';
+import Hero from '../components/ki/Hero.astro';
+import System from '../components/ki/System.astro';
+import Nutzen from '../components/ki/Nutzen.astro';
+import Leistungen from '../components/ki/Leistungen.astro';
+import Ablauf from '../components/ki/Ablauf.astro';
+import Modell from '../components/ki/Modell.astro';
+import Versickern from '../components/ki/Versickern.astro';
+import Terminkriterien from '../components/ki/Terminkriterien.astro';
+import Vergleich from '../components/ki/Vergleich.astro';
+import Verguetung from '../components/ki/Verguetung.astro';
+import Sicherheit from '../components/ki/Sicherheit.astro';
+import Ansprechpartner from '../components/ki/Ansprechpartner.astro';
+import Footer from '../components/ki/Footer.astro';
+import { pages, show } from '../data/sections';
+import { meta } from '../data/content/kiRegioSystem';
+
+const P = '/ki-regio-system';
+---
+<Base title={meta.title} description={meta.description} noindex={pages[P].noindex} bodyBg="var(--color-kit-white)">
+  {show(P, 'hero') && <Hero />}
+  {show(P, 'system') && <System />}
+  {show(P, 'nutzen') && <Nutzen />}
+  {show(P, 'leistungen') && <Leistungen />}
+  {show(P, 'ablauf') && <Ablauf />}
+  {show(P, 'modell') && <Modell />}
+  {show(P, 'versickern') && <Versickern />}
+  {show(P, 'terminkriterien') && <Terminkriterien />}
+  {show(P, 'vergleich') && <Vergleich />}
+  {show(P, 'verguetung') && <Verguetung />}
+  {show(P, 'sicherheit') && <Sicherheit />}
+  {show(P, 'ansprechpartner') && <Ansprechpartner />}
+  {show(P, 'footer') && <Footer />}
+</Base>

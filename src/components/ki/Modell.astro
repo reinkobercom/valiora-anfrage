@@ -1,0 +1,56 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import IconCard from '../ui/IconCard.astro';
+import { modell as c } from '../../data/content/kiRegioSystem';
+---
+<section class="root" style="background: var(--color-kit-dark);">
+  <div class="container">
+    <div class="head">
+      <SectionHead kicker={c.kicker} title={c.titleStart} accent={c.titleAccent} titleEnd={c.titleEnd} subline={c.subline} align="left" tone="light" />
+    </div>
+
+    <ul class="grid">
+      {c.items.map((it, i) => (
+        <li class="cell" data-reveal data-amount="0.3" style={`--ry: 22px; --rdur: 0.5s; --rdelay: ${(i * 0.09).toFixed(2)}s;`}>
+          <IconCard icon={it.icon} title={it.title} text={it.text} tone="light" />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .root {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding: clamp(84px, 9vw, 148px) 20px;
+    font-family: var(--font-text);
+  }
+  .root::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(64% 52% at 84% 6%, #C6A15B14 0%, #C6A15B00 66%);
+  }
+  .container { max-width: 1250px; margin: 0 auto; width: 100%; }
+  .head { margin-bottom: clamp(58px, 6.4vw, 96px); max-width: 760px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(30px, 3.4vw, 54px);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .cell {
+    padding: clamp(28px, 2.8vw, 40px);
+    border: 1px solid #ffffff17;
+    border-radius: 8px;
+    background: #ffffff08;
+  }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; gap: 20px; }
+  }
+</style>

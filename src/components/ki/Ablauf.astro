@@ -1,0 +1,200 @@
+---
+import Icon from '../ui/Icon.astro';
+import SectionHead from '../ui/SectionHead.astro';
+import StepNumber from '../ui/StepNumber.astro';
+import { ablauf as c } from '../../data/content/kiRegioSystem';
+
+const dotsOn = [3, 8, 12, 17, 22, 25];
+---
+<section class="root" style="background: var(--color-kit-white); --accent: var(--color-kit-key1);">
+  <div class="container">
+    <div class="head">
+      <SectionHead kicker={c.kicker} title={c.titleStart} accent={c.titleAccent} titleEnd={c.titleEnd} subline={c.subline} align="center" tone="dark" />
+    </div>
+
+    <ol class="steps">
+      {c.steps.map((s, i) => {
+        const flip = i % 2 === 1;
+        return (
+          <li class:list={['step', flip && 'right']} data-reveal data-amount="0.3" style="--ry: 24px; --rdur: 0.55s;">
+            {(flip ? ['visual', 'rail', 'copy'] : ['copy', 'rail', 'visual']).map((part) =>
+              part === 'copy' ? (
+            <div class="copy">
+              <p class="owner">{s.owner}</p>
+              <h3 class="stepTitle">{s.title}</h3>
+              <p class="stepText">{s.text}</p>
+            </div>
+              ) : part === 'rail' ? (
+            <div class="rail">
+              <span class="railLine" aria-hidden="true"></span>
+              <span class="railNum"><StepNumber value={i + 1} tone="gold" /></span>
+            </div>
+              ) : (
+            <div class="visual">
+              {s.visual === 'pruefung' ? (
+                <div class="miniCard">
+                  <p class="miniHead">{c.checkHead}</p>
+                  {c.checkRows.map((r) => (
+                    <div class="checkRow">
+                      <span class="checkIco"><Icon name="check" size={14} strokeWidth={3} /></span>
+                      <span>{r}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : s.visual === 'termin' ? (
+                <div class="miniCard">
+                  <p class="miniHead">{c.terminHead}</p>
+                  {c.terminRows.map((r) => (
+                    <div class="miniRow">
+                      <span>{r.label}</span>
+                      <span class="miniValue">{r.value}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div class="dotGrid" aria-hidden="true">
+                  {Array.from({ length: 28 }).map((_, d) => (
+                    <span class:list={['dot', dotsOn.includes(d) && 'dotOn']}></span>
+                  ))}
+                </div>
+              )}
+            </div>
+              )
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .root { padding: clamp(84px, 9vw, 148px) 20px; font-family: var(--font-text); }
+  .container { max-width: 1120px; margin: 0 auto; width: 100%; }
+  .head { margin-bottom: clamp(60px, 6.6vw, 104px); }
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(56px, 6vw, 96px);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 1fr 62px 1fr;
+    gap: clamp(20px, 3vw, 48px);
+    align-items: center;
+  }
+  .right .copy { order: 1; }
+  .rail {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-self: stretch;
+    align-items: center;
+  }
+  .railLine {
+    position: absolute;
+    top: -48px;
+    bottom: -48px;
+    width: 1px;
+    background: #0B1A2617;
+  }
+  .step:first-child .railLine { top: 50%; }
+  .step:last-child .railLine { bottom: 50%; }
+  .railNum { position: relative; z-index: 1; }
+  .copy { display: flex; flex-direction: column; gap: 14px; }
+  .owner {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #0B1A2678;
+    margin: 0;
+  }
+  .stepTitle {
+    font-family: var(--font-head);
+    font-size: clamp(21px, 2.2vw, 26px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.018em;
+    color: var(--color-kit-black);
+    margin: 0;
+  }
+  .stepText { margin: 0; font-size: 15.5px; line-height: 1.68; color: #0B1A26ad; max-width: 46ch; }
+  .visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 210px;
+    padding: 26px;
+    border-radius: 8px;
+    background: var(--color-kit-light);
+    border: 1px solid #0B1A260f;
+  }
+  .miniCard {
+    width: 100%;
+    max-width: 260px;
+    background: #ffffff;
+    border: 1px solid #0B1A2614;
+    border-radius: 7px;
+    padding: 18px;
+    box-shadow: 0 18px 38px -30px #1D3E5680;
+  }
+  .miniRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 0;
+    border-top: 1px solid #0B1A2610;
+    font-size: 12px;
+    color: #0B1A26a3;
+  }
+  .miniRow:first-of-type { border-top: none; }
+  .miniValue { color: var(--color-kit-black); font-weight: 600; }
+  .miniHead {
+    font-family: var(--font-head);
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    margin: 0 0 14px;
+    color: var(--accent);
+  }
+  .checkRow {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 0;
+    font-size: 12.5px;
+    color: #0B1A26b3;
+    border-top: 1px solid #0B1A2610;
+  }
+  .checkRow:first-of-type { border-top: none; }
+  .checkIco { display: inline-flex; color: var(--accent); }
+  .dotGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 13px;
+    width: 100%;
+    max-width: 240px;
+  }
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: #0B1A2617;
+    justify-self: center;
+  }
+  .dotOn { background: var(--accent); box-shadow: 0 0 0 4px #C6A15B26; }
+  @media (max-width: 900px) {
+    .step { grid-template-columns: 42px 1fr; gap: 20px; align-items: start; }
+    .rail { order: 1; align-self: start; }
+    .railLine { display: none; }
+    .copy { order: 2; }
+    .right .copy { order: 2; }
+    .visual { order: 3; grid-column: 1 / -1; min-height: 180px; }
+  }
+</style>

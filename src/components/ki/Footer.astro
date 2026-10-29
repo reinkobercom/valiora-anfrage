@@ -1,0 +1,65 @@
+---
+import { footer as c } from '../../data/content/kiRegioSystem';
+import { site } from '../../data/site';
+---
+<footer class="root" style="background: var(--color-kit-white); border-top-color: var(--color-kit-key1);">
+  <div class="container">
+    <div class="top">
+      <div class="brand">
+        <p class="name">{c.brandName}</p>
+        <p class="tagline">{c.tagline}</p>
+      </div>
+      <nav class="links" aria-label="Rechtliches">
+        <a class="link tap" href={site.legal.impressum}>Impressum</a>
+        <a class="link tap" href={site.legal.datenschutz}>Datenschutz</a>
+        <a class="link tap" href="#cookie-einstellungen" data-cookie-settings>Cookie-Einstellungen</a>
+      </nav>
+    </div>
+    <div class="bottom">
+      <p class="note">{c.confidentialNote}</p>
+      <p class="copy">{c.copyright}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .root {
+    padding: clamp(48px, 5vw, 76px) 20px clamp(40px, 4vw, 60px);
+    font-family: var(--font-text);
+    border-top: 1px solid #0B1A2612;
+  }
+  .container { max-width: 1120px; margin: 0 auto; width: 100%; }
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .brand { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .name {
+    font-family: var(--font-head);
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: var(--color-kit-black);
+    margin: 0;
+  }
+  .tagline { margin: 0; font-size: 13.5px; color: #0B1A268a; }
+  .links { display: flex; flex-wrap: wrap; gap: 24px; }
+  .link { font-size: 13.5px; color: #0B1A26a3; text-decoration: none; }
+  .link:hover { color: var(--color-kit-black); text-decoration: underline; }
+  .link:focus-visible { outline: 2px solid var(--color-kit-key1); outline-offset: 3px; }
+  .bottom {
+    margin-top: clamp(28px, 3vw, 42px);
+    padding-top: 22px;
+    border-top: 1px solid #0B1A260f;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 30px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .note { margin: 0; font-size: 12px; color: #0B1A2678; max-width: 70ch; }
+  .copy { margin: 0; font-size: 12px; color: #0B1A2678; white-space: nowrap; }
+</style>
