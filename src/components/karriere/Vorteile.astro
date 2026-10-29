@@ -1,0 +1,50 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import IconCard from '../ui/IconCard.astro';
+import { vorteile as c } from '../../data/content/karriere';
+---
+<section class="sec" style="background: var(--color-kit-white);">
+  <div class="container">
+    <SectionHead kicker={c.kicker} title={c.title} accent={c.titleAccent} titleEnd={c.titleEnd} subline={c.subline} align="left" tone="dark" />
+
+    <div class="grid">
+      {c.items.map((it, i) => (
+        <div class="cell" data-reveal data-amount="0.3" style={`--ry: 18px; --rdur: 0.4s; --rdelay: ${((i % 4) * 0.06).toFixed(2)}s;`}>
+          <IconCard icon={it.icon} title={it.title} text={it.text} tone="dark" />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .sec { width: 100%; padding: clamp(72px, 8vw, 120px) 24px; font-family: var(--font-text); }
+  .container { max-width: 1250px; margin: 0 auto; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: clamp(40px, 4.4vw, 62px);
+    border-top: 1px solid #1D3E561a;
+    border-left: 1px solid #1D3E561a;
+  }
+  .cell {
+    padding: clamp(24px, 2.4vw, 34px);
+    border-right: 1px solid #1D3E561a;
+    border-bottom: 1px solid #1D3E561a;
+  }
+  /* Hover-Hintergrund ergänzt die Einblend-Transition, statt sie zu überschreiben */
+  html:global(.js) .cell[data-reveal] {
+    transition:
+      opacity var(--rdur, 0.6s) var(--ease-out) var(--rdelay, 0s),
+      transform var(--rdur, 0.6s) var(--ease-out) var(--rdelay, 0s),
+      background-color 0.2s ease;
+  }
+  .cell:hover { background: #C6A15B0f; }
+  @media (max-width: 1080px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .sec { padding: 64px 20px; }
+    .grid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

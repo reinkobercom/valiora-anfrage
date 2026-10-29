@@ -1,0 +1,102 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { faq as c } from '../../data/content/karriere';
+---
+<section class="sec" style="background: var(--color-kit-white);">
+  <div class="container">
+    <div class="aside">
+      <SectionHead kicker={c.kicker} title={c.title} accent={c.titleAccent} titleEnd={c.titleEnd} subline={c.subline} align="left" tone="dark" />
+      <div class="ctaWrap">
+        <Button href={c.ctaHref} variant="outline" size="md" icon="arrowRight">{c.ctaLabel}</Button>
+      </div>
+    </div>
+
+    <div class="list">
+      {c.items.map((it) => (
+        <details class="item" name="karriere-faq">
+          <summary class="head">
+            <h3 class="q">{it.question}</h3>
+            <span class="sign" aria-hidden="true">
+              <span class="i-plus"><Icon name="plus" size={17} strokeWidth={2.4} /></span>
+              <span class="i-minus"><Icon name="minus" size={17} strokeWidth={2.4} /></span>
+            </span>
+          </summary>
+          <div class="panel"><p class="a">{it.answer}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Nur ein Eintrag gleichzeitig offen – auch in Browsern ohne <details name>
+  const items = Array.from(document.querySelectorAll<HTMLDetailsElement>('details[name="karriere-faq"]'));
+  items.forEach((d) => d.addEventListener('toggle', () => {
+    if (d.open) items.forEach((o) => { if (o !== d) o.open = false; });
+  }));
+</script>
+
+<style>
+  .sec { width: 100%; padding: clamp(72px, 8vw, 120px) 24px; font-family: var(--font-text); }
+  .container {
+    max-width: 1250px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+    gap: clamp(38px, 5vw, 86px);
+    align-items: start;
+  }
+  .aside { position: sticky; top: 40px; }
+  .ctaWrap { margin-top: 30px; }
+  .list { border-top: 1px solid #1D3E561f; }
+
+  /* @siteui/accordion-item */
+  .item { border-bottom: 1px solid #1D3E561f; font-family: var(--font-text); }
+  .head {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+    text-align: left;
+  }
+  .head::-webkit-details-marker { display: none; }
+  .head:focus-visible { outline: 2px solid var(--color-kit-key1); outline-offset: 3px; }
+  .q {
+    margin: 0;
+    font-family: var(--font-head);
+    font-size: clamp(16px, 1.7vw, 18px);
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--color-kit-black);
+  }
+  .sign {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    flex-shrink: 0;
+    background: #C6A15B24;
+    color: #8a6c2f;
+    transition: background-color 0.18s ease;
+  }
+  .i-minus { display: none; }
+  .item[open] .i-minus { display: block; }
+  .item[open] .i-plus { display: none; }
+  .item[open] .sign { background: var(--color-kit-key1); color: var(--color-kit-black); }
+  .panel { padding: 0 54px 22px 0; }
+  .a { margin: 0; font-size: 15.5px; line-height: 1.62; color: #1D3E56cc; }
+  @media (max-width: 900px) {
+    .sec { padding: 64px 20px; }
+    .container { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+    .aside { position: static; }
+  }
+</style>

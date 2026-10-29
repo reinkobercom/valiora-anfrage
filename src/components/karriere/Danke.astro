@@ -1,0 +1,113 @@
+---
+import { Image } from 'astro:assets';
+import Badge from '../ui/Badge.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import StepNumber from '../ui/StepNumber.astro';
+import { danke as c } from '../../data/content/karriereDanke';
+import { images } from '../../data/images';
+---
+<section class="sec full" style="background: var(--color-kit-light); --accent: var(--color-kit-key1);">
+  <div class="container">
+    <div class="brand">
+      <Image class="logo" src={images.logoDunkel.src} alt={images.logoDunkel.alt} width={158} widths={[158, 316, 474]} sizes="158px" loading="eager" />
+    </div>
+
+    <div data-reveal data-reveal-load style="--ry: 20px; --rdur: 0.5s;">
+      <span class="mark" aria-hidden="true"><Icon name="check" size={26} strokeWidth={2.6} /></span>
+      <div class="badgeRow"><Badge variant="gold" dot>{c.badge}</Badge></div>
+      <h1 class="title">{c.title}<span class="accent">{c.titleAccent}</span>{c.titleEnd}</h1>
+      <p class="lead">{c.lead}</p>
+    </div>
+
+    <p class="stepsTitle">{c.stepsTitle}</p>
+    <div class="steps">
+      {c.steps.map((s, i) => (
+        <div class="step" data-reveal data-reveal-load style={`--ry: 14px; --rdur: 0.4s; --rdelay: ${(0.12 + i * 0.08).toFixed(2)}s;`}>
+          <StepNumber value={i + 1} tone="outline" />
+          <div>
+            <h2 class="stepTitle">{s.title}</h2>
+            <p class="stepText">{s.text}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="noteBox">
+      <p class="noteTitle">{c.noteTitle}</p>
+      <p class="noteText">{c.noteText}</p>
+    </div>
+
+    <div class="ctaWrap">
+      <Button href={c.ctaHref} variant="outline" size="md">{c.ctaLabel}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sec { width: 100%; padding: 48px 24px 90px; font-family: var(--font-text); }
+  .full { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; }
+  .container { max-width: 760px; margin: 0 auto; width: 100%; }
+  .brand { display: block; margin: 0 0 56px; width: 158px; }
+  .brand :global(.logo) { display: block; width: 100%; height: auto; }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 999px;
+    margin-bottom: 26px;
+    background: var(--accent);
+    color: #0B1A26;
+  }
+  .badgeRow { margin-bottom: 20px; }
+  .title {
+    font-family: var(--font-head);
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.024em;
+    margin: 0;
+    color: var(--color-kit-black);
+    text-wrap: balance;
+  }
+  .accent { color: var(--accent); }
+  .lead { margin: 22px 0 0; font-size: clamp(16px, 1.6vw, 18px); line-height: 1.68; color: #0B1A26b3; max-width: 60ch; }
+  .stepsTitle {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #1D3E5699;
+    margin: 52px 0 4px;
+  }
+  .steps { display: flex; flex-direction: column; }
+  .step {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid #1D3E561f;
+  }
+  .step:last-child { border-bottom: none; }
+  .stepTitle {
+    font-family: var(--font-head);
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    margin: 8px 0 7px;
+    color: var(--color-kit-black);
+  }
+  .stepText { margin: 0; font-size: 15px; line-height: 1.6; color: #0B1A26a3; }
+  .noteBox { margin-top: 40px; padding: 22px 24px; border-left: 2px solid var(--accent); background: #ffffff; }
+  .noteTitle { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin: 0 0 8px; color: #1D3E5699; }
+  .noteText { margin: 0; font-size: 14.5px; line-height: 1.6; color: #0B1A26b3; }
+  .ctaWrap { margin-top: 38px; }
+  @media (max-width: 720px) {
+    .sec { padding: 36px 20px 68px; }
+    .brand { margin-bottom: 36px; }
+    .step { grid-template-columns: 36px minmax(0, 1fr); gap: 16px; }
+  }
+</style>

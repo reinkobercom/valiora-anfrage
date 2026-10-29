@@ -1,0 +1,66 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import StepNumber from '../ui/StepNumber.astro';
+import Button from '../ui/Button.astro';
+import { ablauf as c } from '../../data/content/karriere';
+---
+<section class="sec" style="background: var(--color-kit-light);">
+  <div class="container">
+    <div>
+      <SectionHead kicker={c.kicker} title={c.title} accent={c.titleAccent} titleEnd={c.titleEnd} subline={c.subline} align="left" tone="dark" />
+      <div class="ctaWrap">
+        <Button href={c.ctaHref} variant="gold" size="lg" icon="arrowRight">{c.ctaLabel}</Button>
+      </div>
+    </div>
+
+    <div class="steps">
+      {c.steps.map((s, i) => (
+        <div class="step" data-reveal data-amount="0.4" style={`--ry: 16px; --rdur: 0.4s; --rdelay: ${(i * 0.07).toFixed(2)}s;`}>
+          <StepNumber value={i + 1} tone="outline" />
+          <div>
+            <h3 class="stepTitle">{s.title}</h3>
+            <p class="stepText">{s.text}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .sec { width: 100%; padding: clamp(72px, 8vw, 120px) 24px; font-family: var(--font-text); }
+  .container {
+    max-width: 1250px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+    gap: clamp(38px, 5vw, 86px);
+    align-items: start;
+  }
+  .ctaWrap { margin-top: 32px; }
+  .steps { display: flex; flex-direction: column; }
+  .step {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 22px;
+    padding: 26px 0;
+    border-bottom: 1px solid #1D3E561f;
+  }
+  .step:first-child { padding-top: 0; }
+  .step:last-child { border-bottom: none; padding-bottom: 0; }
+  .stepTitle {
+    font-family: var(--font-head);
+    font-size: clamp(17px, 1.8vw, 19px);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+    margin: 7px 0 9px;
+    color: var(--color-kit-black);
+  }
+  .stepText { margin: 0; font-size: 15px; line-height: 1.65; color: #0B1A26a8; }
+  @media (max-width: 900px) {
+    .sec { padding: 64px 20px; }
+    .container { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+    .step { grid-template-columns: 36px minmax(0, 1fr); gap: 16px; }
+  }
+</style>

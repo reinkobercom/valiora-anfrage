@@ -1,0 +1,235 @@
+---
+/**
+ * Bewerbungsformular (Quiz) – 1:1 nach dem Onepage-Original, aber OHNE Video-Schritt.
+ * 4 Schritte: Rolle → Erfahrung → Sprache/Zeit/Start/Technik → Kontakt & Abschluss.
+ * Ohne JavaScript werden alle Schritte untereinander gezeigt und klassisch abgeschickt.
+ * Logik: src/scripts/karriere-quiz.ts · Versand: src/pages/api/bewerbung.ts
+ */
+import SectionHead from '../ui/SectionHead.astro';
+import Button from '../ui/Button.astro';
+import Field from '../ui/Field.astro';
+import RoleChip from '../ui/RoleChip.astro';
+import ChoiceOption from '../ui/ChoiceOption.astro';
+import { quiz as c } from '../../data/content/karriere';
+import { site } from '../../data/site';
+
+const TOTAL = 4;
+type Q = { key: string; title: string; hint?: string; options: string[]; wide?: boolean; optional?: boolean };
+const step2: Q[] = [
+  { key: 'roleExperience', title: c.q2Title, options: c.q2Options },
+  { key: 'salesBackground', title: c.q3Title, options: c.q3Options.map((o) => o.label), wide: true },
+  { key: 'crmExperience', title: c.q4Title, options: c.q4Options, optional: true },
+];
+const step3: Q[] = [
+  { key: 'germanLevel', title: c.q5Title, hint: c.q5Hint, options: c.q5Options },
+  { key: 'weeklyHours', title: c.q6Title, options: c.q6Options },
+  { key: 'startDate', title: c.q7Title, options: c.q7Options },
+  { key: 'employmentType', title: c.q8Title, options: c.q8Options },
+  { key: 'workSetup', title: c.q9Title, options: c.q9Options },
+];
+const hidesCrm = c.q3Options.filter((o) => o.hidesCrm).map((o) => o.label);
+---
+<section class="sec" id={c.anchorId} style="background: var(--color-kit-light); --accent: var(--color-kit-key1);">
+  <div class="container">
+    <SectionHead kicker={c.kicker} title={c.title} accent={c.titleAccent} titleEnd={c.titleEnd} subline={c.subline} align="center" tone="dark" />
+
+    <div class="card" data-quiz-card>
+      <div class="progressBar" aria-hidden="true"><div class="progressFill" data-progress style={`width: ${100 / TOTAL}%;`}></div></div>
+
+      <form
+        class="inner"
+        action="/api/bewerbung"
+        method="post"
+        novalidate
+        data-quiz
+        data-total={TOTAL}
+        data-redirect={c.successHref}
+        data-hides-crm={JSON.stringify(hidesCrm)}
+        data-err-choice={c.errorChoice}
+        data-err-text={c.errorText}
+        data-err-email={c.errorEmail}
+        data-err-consent={c.errorConsent}
+        data-err-submit={c.errorSubmit}
+        data-submitting={c.submittingLabel}
+        data-phone-hint={`Oder ruf uns direkt an: ${site.contact.phone}`}
+      >
+        <div class="hp-field" aria-hidden="true">
+          <label for="bew-website">Bitte leer lassen</label>
+          <input id="bew-website" type="text" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <p class="progressLabel" data-progress-label aria-live="polite">
+          {c.progressLabel}{' '}<span data-step-now>1</span>{' '}{`${c.progressOf} ${TOTAL}`}
+        </p>
+
+        <!-- Schritt 1 · Rolle -->
+        <div class="stepBox" data-step="1">
+          <div class="block" role="radiogroup" aria-labelledby="bew-q-role" data-group="role">
+            <h3 class="qTitle" id="bew-q-role">{c.q1Title}</h3>
+            <p class="qHint">{c.q1Hint}</p>
+            <div class="roleGrid">
+              {c.roleOptions.map((o) => <RoleChip inputName="role" name={o.name} tag={o.tag} icon={o.icon} tone="cream" size="lg" />)}
+            </div>
+            <span class="error" data-err-for="role" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <!-- Schritt 2 · Erfahrung -->
+        <div class="stepBox" data-step="2">
+          {step2.map((q) => (
+            <div class="block" role="radiogroup" aria-labelledby={`bew-q-${q.key}`} data-group={q.key} data-optional={q.optional ? '' : undefined}>
+              <h3 class="qTitle" id={`bew-q-${q.key}`}>{q.title}</h3>
+              {q.hint ? <p class="qHint">{q.hint}</p> : <div class="qSpacer"></div>}
+              <div class:list={['options', q.wide && 'optionsOne']}>
+                {q.options.map((o) => <ChoiceOption name={q.key} label={o} />)}
+              </div>
+              <span class="error" data-err-for={q.key} aria-live="polite"></span>
+            </div>
+          ))}
+        </div>
+
+        <!-- Schritt 3 · Sprache, Zeit, Start & Technik -->
+        <div class="stepBox" data-step="3">
+          {step3.map((q) => (
+            <div class="block" role="radiogroup" aria-labelledby={`bew-q-${q.key}`} data-group={q.key}>
+              <h3 class="qTitle" id={`bew-q-${q.key}`}>{q.title}</h3>
+              {q.hint ? <p class="qHint">{q.hint}</p> : <div class="qSpacer"></div>}
+              <div class="options">
+                {q.options.map((o) => <ChoiceOption name={q.key} label={o} />)}
+              </div>
+              <span class="error" data-err-for={q.key} aria-live="polite"></span>
+            </div>
+          ))}
+        </div>
+
+        <!-- Schritt 4 · Kontakt & Abschluss (ersetzt den früheren Video-Schritt) -->
+        <div class="stepBox" data-step="4">
+          <div class="block">
+            <h3 class="qTitle">{c.contactTitle}</h3>
+            <p class="qHint">{c.contactHint}</p>
+            <div class="fields">
+              <Field id="bew-vorname" name="firstName" label={c.firstNameLabel} required autocomplete="given-name" />
+              <Field id="bew-nachname" name="lastName" label={c.lastNameLabel} required autocomplete="family-name" />
+              <Field id="bew-email" name="email" type="email" label={c.emailLabel} required autocomplete="email" inputmode="email" class="fieldWide" />
+              <Field id="bew-telefon" name="phone" type="tel" label={c.phoneLabel} required autocomplete="tel" inputmode="tel" class="fieldWide" />
+            </div>
+
+            <div class="qSpacer"></div>
+            <Field id="bew-notiz" name="note" type="textarea" label={c.noteLabel} rows={4} />
+
+            <label class="consent" data-field="consent">
+              <input type="checkbox" name="consent" value="ja" required aria-describedby="bew-consent-err" />
+              <span class="consentText">
+                {c.consentText}<a href={site.legal.datenschutz} target="_blank" rel="noopener noreferrer">{c.privacyLabel}</a>.
+              </span>
+            </label>
+            <span class="error" id="bew-consent-err" data-err-for="consent" aria-live="polite"></span>
+            <span class="error" data-err-line role="alert"></span>
+          </div>
+        </div>
+
+        <div class="nav">
+          <Button variant="outline" size="md" class="navBack" data-back>{c.backLabel}</Button>
+          <span class="navSpacer"></span>
+          <Button variant="gold" size="md" icon="arrowRight" class="navNext" data-next>{c.nextLabel}</Button>
+          <Button type="submit" variant="gold" size="md" icon="arrowRight" class="navSubmit" data-submit><span data-submit-label>{c.submitLabel}</span></Button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/karriere-quiz';
+</script>
+
+<style>
+  .sec { width: 100%; padding: clamp(72px, 8vw, 120px) 24px; font-family: var(--font-text); }
+  .container { max-width: 820px; margin: 0 auto; }
+  .card {
+    margin-top: clamp(36px, 4vw, 52px);
+    background: var(--color-kit-white);
+    border: 1px solid #1D3E561f;
+    border-radius: 8px;
+    box-shadow: 0 34px 70px -52px #1D3E5680;
+    overflow: hidden;
+  }
+  .progressBar { height: 3px; width: 100%; background: #1D3E5614; }
+  .progressFill { height: 100%; transition: width 0.35s ease; background: var(--accent); }
+  .inner { padding: clamp(26px, 3.4vw, 44px); }
+  .progressLabel {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #1D3E5699;
+    margin: 0 0 26px;
+  }
+  .block { margin-bottom: 34px; }
+  .stepBox > .block:last-child { margin-bottom: 0; }
+  .block[hidden], .stepBox[hidden] { display: none; }
+  .qTitle {
+    font-family: var(--font-head);
+    font-size: clamp(18px, 2vw, 21px);
+    font-weight: 800;
+    letter-spacing: -0.018em;
+    line-height: 1.3;
+    margin: 0 0 8px;
+    color: var(--color-kit-black);
+  }
+  .qHint { margin: 0 0 18px; font-size: 14.5px; line-height: 1.55; color: #0B1A26a3; }
+  .qSpacer { margin-bottom: 18px; }
+  .options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .optionsOne { grid-template-columns: minmax(0, 1fr); }
+  .roleGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .roleGrid > :global(*) { width: 100%; }
+  .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .fields :global(.fieldWide) { grid-column: 1 / -1; }
+  .error { display: block; margin-top: 10px; font-size: 13.5px; font-weight: 500; line-height: 1.5; color: #b0402f; }
+  .error:empty { display: none; }
+  .consent { display: flex; align-items: flex-start; gap: 12px; margin-top: 26px; cursor: pointer; }
+  .consent input {
+    width: 20px;
+    height: 20px;
+    margin: 2px 0 0;
+    accent-color: var(--color-kit-key1);
+    flex-shrink: 0;
+  }
+  .consentText { font-size: 14px; line-height: 1.55; color: #1D3E56d1; }
+  .consentText a { color: var(--color-kit-key2); text-underline-offset: 3px; }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 34px;
+    padding-top: 26px;
+    border-top: 1px solid #1D3E5614;
+  }
+  .navSpacer { flex: 1 1 auto; }
+
+  /* Ohne JavaScript: alle Schritte sichtbar, nur der Absenden-Button */
+  .inner:not(.is-enhanced) .progressLabel,
+  .inner:not(.is-enhanced) :global(.navBack),
+  .inner:not(.is-enhanced) :global(.navNext) { display: none; }
+  .inner:not(.is-enhanced) .stepBox + .stepBox { margin-top: 34px; padding-top: 34px; border-top: 1px solid #1D3E5614; }
+  .inner.is-enhanced :global([hidden]) { display: none !important; }
+
+  /* Schrittwechsel (ersetzt AnimatePresence) */
+  .stepBox.is-entering { animation: stepIn 0.22s ease both; }
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateX(16px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stepBox.is-entering { animation: none; }
+    .progressFill { transition: none; }
+  }
+
+  @media (max-width: 720px) {
+    .sec { padding: 64px 20px; }
+    .options { grid-template-columns: minmax(0, 1fr); }
+    .roleGrid { grid-template-columns: minmax(0, 1fr); }
+    .fields { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

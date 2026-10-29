@@ -1,0 +1,70 @@
+---
+/** @siteui/choice-option – Auswahl-Button mit Häkchen (aria-pressed) */
+import Icon from './Icon.astro';
+interface Props {
+  label: string; hint?: string; selected?: boolean; size?: 'sm' | 'md'; class?: string;
+  /** Formular-Modus: echtes Radio-Feld (funktioniert auch ohne JavaScript) */
+  name?: string; value?: string; [key: string]: unknown;
+}
+const { label, hint, selected = false, size = 'md', class: cls, name, value, ...rest } = Astro.props;
+const classes = ['ui-choice', `s-${size}`, selected && 'is-on', cls];
+---
+{name ? (
+  <label class:list={[...classes, 'is-radio']} {...rest}>
+    <input class="radio" type="radio" name={name} value={value ?? label} checked={selected} />
+    <span class="body">
+      <span class="label">{label}</span>
+      {hint && <span class="hint">{hint}</span>}
+    </span>
+    <span class="mark" aria-hidden="true"><Icon name="check" size={13} strokeWidth={3.2} /></span>
+  </label>
+) : (
+  <button class:list={classes} type="button" aria-pressed={selected ? 'true' : 'false'} {...rest}>
+    <span class="body">
+      <span class="label">{label}</span>
+      {hint && <span class="hint">{hint}</span>}
+    </span>
+    <span class="mark" aria-hidden="true"><Icon name="check" size={13} strokeWidth={3.2} /></span>
+  </button>
+)}
+<style>
+  .ui-choice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-text);
+    background: var(--color-kit-white);
+    border: 1px solid #1D3E5626;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+    margin: 0;
+  }
+  .s-sm { padding: 13px 15px; min-height: 50px; }
+  .s-md { padding: 16px 18px; min-height: 58px; }
+  .ui-choice:hover { border-color: #C6A15B; background: #C6A15B0a; }
+  .ui-choice:focus-visible { outline: 3px solid var(--color-kit-key1); outline-offset: 2px; }
+  .radio { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+  .is-radio { position: relative; }
+  .is-radio:has(.radio:focus-visible) { outline: 3px solid var(--color-kit-key1); outline-offset: 2px; }
+  .body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .label { font-size: 15.5px; font-weight: 600; line-height: 1.35; color: var(--color-kit-black); }
+  .hint { font-size: 13px; line-height: 1.45; color: #1D3E5699; }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    flex-shrink: 0;
+    border: 1px solid #1D3E5626;
+    color: transparent;
+    transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+  }
+  .is-on, .is-radio:has(.radio:checked) { border-color: var(--color-kit-key1); background: #C6A15B14; box-shadow: 0 0 0 3px #C6A15B24; }
+  .is-on .mark, .is-radio:has(.radio:checked) .mark { background: var(--color-kit-key1); border-color: var(--color-kit-key1); color: var(--color-kit-black); }
+</style>

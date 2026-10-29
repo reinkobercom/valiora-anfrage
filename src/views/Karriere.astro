@@ -1,0 +1,29 @@
+---
+/** Karriereseite /karriere – Sektionen ein-/ausschalten in src/data/sections.ts */
+import Base from '../layouts/Base.astro';
+import Hero from '../components/karriere/Hero.astro';
+import Rollen from '../components/karriere/Rollen.astro';
+import Angebot from '../components/karriere/Angebot.astro';
+import Vorteile from '../components/karriere/Vorteile.astro';
+import Verguetung from '../components/karriere/Verguetung.astro';
+import Entwicklung from '../components/karriere/Entwicklung.astro';
+import Ablauf from '../components/karriere/Ablauf.astro';
+import Faq from '../components/karriere/Faq.astro';
+import Quiz from '../components/karriere/Quiz.astro';
+import Footer from '../components/karriere/Footer.astro';
+import { pages, show } from '../data/sections';
+import { meta } from '../data/content/karriere';
+const p = pages['/karriere'];
+---
+<Base title={meta.title} description={meta.description} noindex={p.noindex} bodyBg="var(--color-kit-white)">
+  {show('/karriere', 'hero') && <Hero />}
+  {show('/karriere', 'rollen') && <Rollen />}
+  {show('/karriere', 'angebot') && <Angebot />}
+  {show('/karriere', 'vorteile') && <Vorteile />}
+  {show('/karriere', 'verguetung') && <Verguetung />}
+  {show('/karriere', 'entwicklung') && <Entwicklung />}
+  {show('/karriere', 'ablauf') && <Ablauf />}
+  {show('/karriere', 'faq') && <Faq />}
+  {show('/karriere', 'quiz') && <Quiz />}
+  {show('/karriere', 'footer') && <Footer />}
+</Base>

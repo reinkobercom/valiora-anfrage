@@ -1,0 +1,11 @@
+---
+/** Dankeseite nach der Bewerbung /karriere-danke – bewusst nicht in Google (noindex) */
+import Base from '../layouts/Base.astro';
+import Danke from '../components/karriere/Danke.astro';
+import { pages, show } from '../data/sections';
+import { meta } from '../data/content/karriereDanke';
+const p = pages['/karriere-danke'];
+---
+<Base title={meta.title} description={meta.description} noindex={p.noindex} bodyBg="var(--color-kit-light)">
+  {show('/karriere-danke', 'danke') && <Danke />}
+</Base>

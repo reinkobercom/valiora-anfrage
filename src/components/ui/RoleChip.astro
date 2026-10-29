@@ -1,0 +1,76 @@
+---
+/** @siteui/role-chip – als Link (href) oder als Auswahl-Button (aria-pressed) */
+import Icon from './Icon.astro';
+interface Props {
+  name: string; tag?: string; href?: string; selected?: boolean; tone?: 'light' | 'dark' | 'cream';
+  size?: 'sm' | 'md' | 'lg'; icon?: string; class?: string;
+  /** Formular-Modus: echtes Radio-Feld (funktioniert auch ohne JavaScript) */
+  inputName?: string; value?: string; [key: string]: unknown;
+}
+const { name, tag, href, selected = false, tone = 'light', size = 'md', icon, class: cls, inputName, value, ...rest } = Astro.props;
+const classes = ['ui-chip', `t-${tone}`, `s-${size}`, selected && 'is-on', cls];
+---
+{inputName ? (
+  <label class:list={[...classes, 'is-radio']} {...rest}>
+    <input class="radio" type="radio" name={inputName} value={value ?? name} checked={selected} />
+    {icon && <span class="ico"><Icon name={icon} size={17} strokeWidth={2.2} /></span>}
+    <span class="body"><span class="name">{name}</span>{tag && <span class="tag">{tag}</span>}</span>
+  </label>
+) : href ? (
+  <a class:list={classes} href={href} {...rest}>
+    {icon && <span class="ico"><Icon name={icon} size={17} strokeWidth={2.2} /></span>}
+    <span class="body"><span class="name">{name}</span>{tag && <span class="tag">{tag}</span>}</span>
+  </a>
+) : (
+  <button class:list={classes} type="button" aria-pressed={selected ? 'true' : 'false'} {...rest}>
+    {icon && <span class="ico"><Icon name={icon} size={17} strokeWidth={2.2} /></span>}
+    <span class="body"><span class="name">{name}</span>{tag && <span class="tag">{tag}</span>}</span>
+  </button>
+)}
+<style>
+  .ui-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-text);
+    border-radius: 5px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: left;
+    background: transparent;
+    transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.18s ease;
+    min-height: 44px;
+  }
+  .s-sm { padding: 9px 14px; }
+  .s-md { padding: 13px 18px; }
+  .s-lg { padding: 18px 22px; }
+  .ui-chip:hover { transform: translateY(-2px); }
+  .ui-chip:focus-visible { outline: 3px solid var(--color-kit-key1); outline-offset: 3px; }
+  /* Radio-Modus: Feld unsichtbar, Fokus und Auswahl am Chip */
+  .radio { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+  .is-radio { position: relative; }
+  .is-radio:has(.radio:focus-visible) { outline: 3px solid var(--color-kit-key1); outline-offset: 3px; }
+  .ico { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 999px; flex-shrink: 0; }
+  .body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .name { font-family: var(--font-head); font-weight: 700; font-size: 15.5px; line-height: 1.2; letter-spacing: -0.01em; }
+  .tag { font-size: 12px; line-height: 1.3; letter-spacing: 0.03em; }
+
+  .t-light { background: #ffffff0d; border-color: #ffffff26; color: #ffffff; }
+  .t-light .ico { background: #C6A15B29; color: var(--color-kit-key1); }
+  .t-light .tag { color: #ffffff8c; }
+  .t-light:hover { border-color: #C6A15B7a; background: #ffffff14; }
+  .t-light.is-on, .t-light:has(.radio:checked) { border-color: var(--color-kit-key1); background: #C6A15B1f; }
+
+  .t-dark { background: var(--color-kit-white); border-color: #1D3E5626; color: var(--color-kit-black); }
+  .t-dark .ico { background: #C6A15B26; color: #8a6c2f; }
+  .t-dark .tag { color: #1D3E5699; }
+  .t-dark:hover { border-color: #C6A15B; }
+  .t-dark.is-on, .t-dark:has(.radio:checked) { border-color: var(--color-kit-key1); background: #C6A15B14; box-shadow: 0 0 0 3px #C6A15B29; }
+
+  .t-cream { background: var(--color-kit-light); border-color: #1D3E561a; color: var(--color-kit-black); }
+  .t-cream .ico { background: #ffffff; color: #8a6c2f; }
+  .t-cream .tag { color: #1D3E5699; }
+  .t-cream:hover { border-color: #C6A15B; }
+  .t-cream.is-on, .t-cream:has(.radio:checked) { border-color: var(--color-kit-key1); background: #C6A15B1a; }
+</style>

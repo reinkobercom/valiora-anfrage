@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import { footer as c } from '../../data/content/karriere';
+import { images } from '../../data/images';
+import { site } from '../../data/site';
+---
+<footer class="sec" style="background: var(--color-kit-white);">
+  <div class="container">
+    <div class="left">
+      <span class="logo">
+        <Image class="logoImg" src={images.logoDunkel.src} alt={images.logoDunkel.alt} width={148} widths={[148, 296, 444]} sizes="148px" />
+      </span>
+      <span class="rule" aria-hidden="true"></span>
+      <span class="tagline">{c.tagline}</span>
+    </div>
+
+    <nav class="right" aria-label="Rechtliches">
+      <a class="link tap" href={site.legal.impressum} target="_blank" rel="noopener noreferrer">Impressum</a>
+      <a class="link tap" href={site.legal.datenschutz} target="_blank" rel="noopener noreferrer">Datenschutz</a>
+      <a class="link tap" href="#cookie-einstellungen" data-cookie-settings>Cookie-Einstellungen</a>
+      <span class="copy">{c.copyright}</span>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .sec { width: 100%; padding: 46px 24px 54px; font-family: var(--font-text); border-top: 1px solid #1D3E561f; margin-top: -1px; position: relative; }
+  .container {
+    max-width: 1250px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 26px;
+    flex-wrap: wrap;
+  }
+  .left { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .logo { display: block; width: 148px; }
+  .logo :global(.logoImg) { display: block; width: 100%; height: auto; }
+  .rule { width: 24px; height: 1px; background: var(--color-kit-key1); }
+  .tagline { font-size: 13.5px; color: #1D3E56a3; }
+  .right { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .link {
+    font-size: 13.5px;
+    color: var(--color-kit-key2);
+    text-decoration: none;
+    border-bottom: 1px solid #1D3E5629;
+    padding-bottom: 2px;
+    transition: border-color 0.16s ease;
+  }
+  .link:hover { border-color: var(--color-kit-key1); }
+  .copy { font-size: 13px; color: #1D3E5680; }
+  @media (max-width: 720px) {
+    .sec { padding: 38px 20px 46px; }
+    .container { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .rule { display: none; }
+  }
+</style>

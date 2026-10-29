@@ -1,0 +1,53 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import StepNumber from '../ui/StepNumber.astro';
+import { entwicklung as c } from '../../data/content/karriere';
+---
+<section class="sec" style="background: var(--color-kit-white);">
+  <div class="container">
+    <SectionHead kicker={c.kicker} title={c.title} accent={c.titleAccent} titleEnd={c.titleEnd} subline={c.subline} align="left" tone="dark" />
+
+    <div class="path">
+      <span class="line" aria-hidden="true"></span>
+      {c.steps.map((s, i) => (
+        <div class="step" data-reveal data-amount="0.35" style={`--ry: 18px; --rdur: 0.45s; --rdelay: ${(i * 0.08).toFixed(2)}s;`}>
+          <StepNumber value={i + 1} tone={i === 0 ? 'gold' : 'outline'} />
+          <span class="stage">{s.stage}</span>
+          <h3 class="stepTitle">{s.title}</h3>
+          <p class="stepText">{s.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .sec { width: 100%; padding: clamp(72px, 8vw, 120px) 24px; font-family: var(--font-text); }
+  .container { max-width: 1250px; margin: 0 auto; }
+  .path {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(20px, 2.6vw, 40px);
+    margin-top: clamp(46px, 5vw, 70px);
+  }
+  .line { position: absolute; left: 21px; right: 21px; top: 21px; height: 1px; background: #1D3E5626; }
+  .step { position: relative; z-index: 1; }
+  .stage { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin: 22px 0 8px; color: var(--color-kit-key1); }
+  .stepTitle {
+    font-family: var(--font-head);
+    font-size: clamp(18px, 1.9vw, 21px);
+    font-weight: 800;
+    letter-spacing: -0.018em;
+    line-height: 1.2;
+    margin: 0 0 11px;
+    color: var(--color-kit-black);
+  }
+  .stepText { margin: 0; font-size: 14.5px; line-height: 1.62; color: #0B1A26a3; max-width: 34ch; }
+  @media (max-width: 900px) {
+    .sec { padding: 64px 20px; }
+    .path { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+    .line { display: none; }
+    .stepText { max-width: none; }
+  }
+</style>
